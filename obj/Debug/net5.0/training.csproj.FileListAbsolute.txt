@@ -1,0 +1,16 @@
+C:\Users\anagh\Desktop\work\training\bin\Debug\net5.0\training.exe
+C:\Users\anagh\Desktop\work\training\bin\Debug\net5.0\training.deps.json
+C:\Users\anagh\Desktop\work\training\bin\Debug\net5.0\training.runtimeconfig.json
+C:\Users\anagh\Desktop\work\training\bin\Debug\net5.0\training.runtimeconfig.dev.json
+C:\Users\anagh\Desktop\work\training\bin\Debug\net5.0\training.dll
+C:\Users\anagh\Desktop\work\training\bin\Debug\net5.0\ref\training.dll
+C:\Users\anagh\Desktop\work\training\bin\Debug\net5.0\training.pdb
+C:\Users\anagh\Desktop\work\training\obj\Debug\net5.0\training.csproj.AssemblyReference.cache
+C:\Users\anagh\Desktop\work\training\obj\Debug\net5.0\training.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\anagh\Desktop\work\training\obj\Debug\net5.0\training.AssemblyInfoInputs.cache
+C:\Users\anagh\Desktop\work\training\obj\Debug\net5.0\training.AssemblyInfo.cs
+C:\Users\anagh\Desktop\work\training\obj\Debug\net5.0\training.csproj.CoreCompileInputs.cache
+C:\Users\anagh\Desktop\work\training\obj\Debug\net5.0\training.dll
+C:\Users\anagh\Desktop\work\training\obj\Debug\net5.0\ref\training.dll
+C:\Users\anagh\Desktop\work\training\obj\Debug\net5.0\training.pdb
+C:\Users\anagh\Desktop\work\training\obj\Debug\net5.0\training.genruntimeconfig.cache
