@@ -2,12 +2,7 @@
 using System;
 namespace training{
     public class Administrator :Staff{
-        private string administratorDepartment;
-
-        public string AdministratorDepartment{
-            get{return administratorDepartment;}
-            set{administratorDepartment=value;}
-        }
+        public string AdministratorDepartment{get;set;}
 
         public override void AddStaff(){
             base.AddStaff();
@@ -18,21 +13,19 @@ namespace training{
             Console.WriteLine(this.StaffId+"\t"+this.StaffName+"\t"+this.StaffAge+"\t"+this.AdministratorDepartment);
         }
 
-
          public override void ViewStaff(){
             Console.WriteLine("ADMINISTRATOR");
             Console.WriteLine("StaffId\tName\tAge\tDepartment");
             Console.WriteLine(this.StaffId+"\t"+this.StaffName+"\t"+this.StaffAge+"\t"+this.AdministratorDepartment);
         }
 
-
         public override void UpdateStaff(){
-            int UpdateOptions;
-            bool loop=true;
+            int updateOptions;
+            bool administratorContinue=true;
             do{
                 Console.WriteLine("Select value to update\n1)Name\n2)Departnemnt\n3)Go back\n");
-                UpdateOptions=Convert.ToInt32(Console.ReadLine());
-                switch(UpdateOptions){
+                updateOptions=Convert.ToInt32(Console.ReadLine());
+                switch(updateOptions){
                 case 1:
                     Console.WriteLine("Enter new Name:");
                     this.StaffName=Console.ReadLine();
@@ -42,17 +35,11 @@ namespace training{
                     this.AdministratorDepartment=Console.ReadLine();
                     break;
                 case 3:
-                    loop=false;
+                    administratorContinue=false;
                     break;
                 }
-
-            }while(loop);
-
+            }while(administratorContinue);
         Console.WriteLine("Administrator");
         }
-
-
-
     }
-
 }
