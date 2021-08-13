@@ -2,18 +2,12 @@ using System;
 
 namespace training{
     public class Support :Staff{
-        private string supportDepartment;
-
-        public string SupportDepartment{
-            get{return supportDepartment;}
-            set{supportDepartment=value;}
-        }
-
+        public string SupportDepartment{get;set;}
 
         public override void AddStaff(){
             base.AddStaff();
             Console.WriteLine("Department:");
-            this.supportDepartment=Console.ReadLine();
+            this.SupportDepartment=Console.ReadLine();
             this.StaffId++;
             Console.WriteLine("StaffId\tName\tAge\tDepartment");
             Console.WriteLine(this.StaffId+"\t"+this.StaffName+"\t"+this.StaffAge+"\t"+this.SupportDepartment);
@@ -27,12 +21,12 @@ namespace training{
         }
 
         public override void UpdateStaff(){
-            int UpdateOptions;
+            int updateOptions;
             bool loop=true;
             do{
                 Console.WriteLine("Select value to update\n1)Name\n2)Department\n3)Go back\n");
-                UpdateOptions=Convert.ToInt32(Console.ReadLine());
-                switch(UpdateOptions){
+                updateOptions=Convert.ToInt32(Console.ReadLine());
+                switch(updateOptions){
                 case 1:
                     Console.WriteLine("Enter new Name:");
                     this.StaffName=Console.ReadLine();;

@@ -6,54 +6,43 @@ namespace training
     {
         static void Main(string[] args)
         {
-            Program staff=new Program();
-            
-            staff.SelectStaff();  
-            
-          
+            Program.SelectStaff();    
         }
 
-
-        public void SelectStaff(){
-            int Options;
-            bool ContinueStaffSelection=true;
+        public static void SelectStaff(){
+            int staffOptions;
+            bool continueStaffSelection=true;
             do{
                 Console.WriteLine("Select the type of staff\n1)Teacher\n2)Administrator\n3)Support\n4)QUIT");
-                Options=Convert.ToInt32(Console.ReadLine());
-                switch(Options){
+                staffOptions=Convert.ToInt32(Console.ReadLine());
+                switch(staffOptions){
                     case 1: 
                         Staff teacher=new Teacher();
-                        this.MainActions(teacher);
+                        Program.MainActions(teacher);
                         break;
                     case 2: 
                         Staff administrator=new Administrator() ;
-                        this.MainActions(administrator);
+                        Program.MainActions(administrator);
                         break;
                     case 3: 
                         Staff support=new Support() ;
-                        this.MainActions(support);
+                        Program.MainActions(support);
                         break;
                     case 4: 
-                        ContinueStaffSelection=false;
+                        continueStaffSelection=false;
                         break;
                 }
-
-            }while(ContinueStaffSelection);
-
-
+            }while(continueStaffSelection);
         }
 
-        private void MainActions(Staff staff){
-            int Options;
-            bool ContinueMainActions=true;
+        private static void MainActions(Staff staff){
+            int mainOptions;
+            bool continueMainActions=true;
             string staffType=staff.GetType().Name.ToUpper();
             do{
-               
-
                 Console.WriteLine("WLECOME TO {0} STAFF PORTAL\nselect Options\n1)Add staff\n2)Delete staff\n3)Update staff details\n4)View staff details",staffType);
-                Options=Convert.ToInt32(Console.ReadLine());
-
-                switch(Options){
+                mainOptions=Convert.ToInt32(Console.ReadLine());
+                switch(mainOptions){
                     case 1: 
                         staff.AddStaff();
                         break;
@@ -66,17 +55,10 @@ namespace training
                     case 4: 
                        staff.ViewStaff();
                         break;
-
                     }
-                
                 Console.WriteLine("Do you want to continue?(0/1):");
-                ContinueMainActions=Convert.ToBoolean(Convert.ToInt32(Console.ReadLine()));
-            }while(ContinueMainActions);
+                continueMainActions=Convert.ToBoolean(Convert.ToInt32(Console.ReadLine()));
+            }while(continueMainActions);
         }
-
-
-
-    }
-
-    
+    }  
 }
