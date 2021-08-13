@@ -5,6 +5,7 @@ namespace training{
         private int staffId=0;
         private string staffName;
         private int staffAge;
+        
 
         public int StaffId{
             get{return staffId;}
