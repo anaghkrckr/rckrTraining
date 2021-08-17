@@ -16,7 +16,6 @@ namespace training
             this.AdministratorDepartment = Console.ReadLine();
             Console.WriteLine("StaffId\tName\tAge\tDepartment");
             Console.WriteLine(this.StaffId + "\t" + this.StaffName + "\t" + this.StaffAge + "\t" + this.AdministratorDepartment);
-            
         }
 
 
@@ -48,10 +47,7 @@ namespace training
 
         public static void ViewStaffs(Administrator administrator)
         {
-            
             Console.WriteLine(administrator.StaffId + "\t" + administrator.StaffName + "\t" + administrator.StaffAge + "\t" + administrator.AdministratorDepartment);
-            
-
         }
     }
 }

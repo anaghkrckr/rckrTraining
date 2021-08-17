@@ -44,18 +44,11 @@ namespace training
                 }
             } while (loop);
             return teacher;
-
-
-            
         }
 
         public static void ViewStaffs(Teacher teacher)
         {
-           
-            
             Console.WriteLine(teacher.StaffId + "\t" + teacher.StaffName + "\t" + teacher.StaffAge + "\t" + teacher.Subject);
-            
-
         }
     }
 }

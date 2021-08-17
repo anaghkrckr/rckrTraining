@@ -67,13 +67,5 @@ namespace training
                 continueMainActions = Convert.ToBoolean(Convert.ToInt32(Console.ReadLine()));
             } while (continueMainActions);
         }
-
-
-        
-
-        
-
-
-        
     }  
 }
