@@ -8,17 +8,13 @@ namespace training
     {
         public string SupportDepartment { get; set; }
 
-
-
         public override void AddStaff(List<Staff> staffs,String staffType)
         {
-          
             base.AddStaff(staffs,staffType);
             Console.WriteLine("Department:");
             this.SupportDepartment = Console.ReadLine();
             Console.WriteLine("StaffId\tName\tAge\tDepartment");
             Console.WriteLine(this.StaffId + "\t" + this.StaffName + "\t" + this.StaffAge + "\t" + this.SupportDepartment);
-            
         }
 
         public static Support UpdateStaff(Support support)
@@ -51,12 +47,7 @@ namespace training
 
         public static void ViewStaffs(Support support)
         {
-           
            Console.WriteLine(support.StaffId + "\t" + support.StaffName + "\t" + support.StaffAge + "\t" + support.SupportDepartment);
-
         }
-
-
     }
-
 }

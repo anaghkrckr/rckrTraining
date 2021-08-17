@@ -17,8 +17,6 @@ namespace training{
             this.StaffType = staffType;
         }
 
-       
-
         public virtual void UpdateStaff() { }
 
         public virtual void ViewStaff() { }
