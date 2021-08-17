@@ -7,27 +7,21 @@ namespace training
     public class Teacher : Staff
     {
         public string Subject { get; set; }
-        public int TeacherStaffId { get; set; }
 
 
-
-
-
-        public override void AddStaff()
+        public override void AddStaff(List<Staff> staffs,string staffType)
         {
-            TeacherStaffId = Staff.StaffId;
-            base.AddStaff();
+            base.AddStaff(staffs,staffType);
             Console.WriteLine("Subject:");
             this.Subject = Console.ReadLine();
             Console.WriteLine("StaffId\tName\tAge\tSubject");
-            Console.WriteLine(this.TeacherStaffId + "\t" + this.StaffName + "\t" + this.StaffAge + "\t" + this.Subject);
-            Program.teacherList.Add(this);
+            Console.WriteLine(this.StaffId + "\t" + this.StaffName + "\t" + this.StaffAge + "\t" + this.Subject);
+            
         }
 
 
-        public static void UpdateStaff()
+        public static Teacher UpdateStaff(Teacher teacher)
         {
-            var index = Program.teacherList.FindIndex(c => c.TeacherStaffId == Staff.UpdateDeleteId);
             int updateOptions;
             bool loop = true;
             do
@@ -38,17 +32,30 @@ namespace training
                 {
                     case 1:
                         Console.WriteLine("Enter new Name:");
-                        Program.teacherList[index].StaffName = Console.ReadLine();
+                        teacher.StaffName = Console.ReadLine();
                         break;
                     case 2:
                         Console.WriteLine("Enter Subject:");
-                        Program.teacherList[index].Subject = Console.ReadLine();
+                        teacher.Subject = Console.ReadLine();
                         break;
                     case 3:
                         loop = false;
                         break;
                 }
             } while (loop);
+            return teacher;
+
+
+            
+        }
+
+        public static void ViewStaffs(Teacher teacher)
+        {
+           
+            
+            Console.WriteLine(teacher.StaffId + "\t" + teacher.StaffName + "\t" + teacher.StaffAge + "\t" + teacher.Subject);
+            
+
         }
     }
 }

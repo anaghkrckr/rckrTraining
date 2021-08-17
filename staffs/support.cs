@@ -7,24 +7,23 @@ namespace training
     public class Support : Staff
     {
         public string SupportDepartment { get; set; }
-        public int SupportStaffId { get; set; }
 
 
 
-        public override void AddStaff()
+        public override void AddStaff(List<Staff> staffs,String staffType)
         {
-            SupportStaffId = Staff.StaffId;
-            base.AddStaff();
+          
+            base.AddStaff(staffs,staffType);
             Console.WriteLine("Department:");
             this.SupportDepartment = Console.ReadLine();
             Console.WriteLine("StaffId\tName\tAge\tDepartment");
-            Console.WriteLine(this.SupportStaffId + "\t" + this.StaffName + "\t" + this.StaffAge + "\t" + this.SupportDepartment);
-            Program.supportList.Add(this);
+            Console.WriteLine(this.StaffId + "\t" + this.StaffName + "\t" + this.StaffAge + "\t" + this.SupportDepartment);
+            
         }
 
-        public static void UpdateStaff()
+        public static Support UpdateStaff(Support support)
         {
-            var index = Program.supportList.FindIndex(c => c.SupportStaffId == Staff.UpdateDeleteId);
+           
             int updateOptions;
             bool loop = true;
             do
@@ -35,11 +34,11 @@ namespace training
                 {
                     case 1:
                         Console.WriteLine("Enter new Name:");
-                        Program.supportList[index].StaffName = Console.ReadLine(); ;
+                        support.StaffName = Console.ReadLine(); ;
                         break;
                     case 2:
                         Console.WriteLine("Enter Department:");
-                        Program.supportList[index].SupportDepartment = Console.ReadLine(); ;
+                        support.SupportDepartment = Console.ReadLine(); ;
                         break;
                     case 3:
                         loop = false;
@@ -47,6 +46,13 @@ namespace training
                 }
 
             } while (loop);
+            return support;
+        }
+
+        public static void ViewStaffs(Support support)
+        {
+           
+           Console.WriteLine(support.StaffId + "\t" + support.StaffName + "\t" + support.StaffAge + "\t" + support.SupportDepartment);
 
         }
 

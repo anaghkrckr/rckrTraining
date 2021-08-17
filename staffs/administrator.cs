@@ -7,23 +7,21 @@ namespace training
     public class Administrator : Staff
     {
         public string AdministratorDepartment { get; set; }
-        public int AdminStaffId { get; set; }
 
-        public override void AddStaff()
+        public override void AddStaff(List<Staff> staffs,String stafftype)
         {
-            AdminStaffId = Staff.StaffId;
-            base.AddStaff();
+         
+            base.AddStaff(staffs,stafftype);
             Console.WriteLine("Department:");
             this.AdministratorDepartment = Console.ReadLine();
             Console.WriteLine("StaffId\tName\tAge\tDepartment");
-            Console.WriteLine(this.AdminStaffId + "\t" + this.StaffName + "\t" + this.StaffAge + "\t" + this.AdministratorDepartment);
-            Program.administratorList.Add(this);
+            Console.WriteLine(this.StaffId + "\t" + this.StaffName + "\t" + this.StaffAge + "\t" + this.AdministratorDepartment);
+            
         }
 
 
-        public static void UpdateStaff()
+        public static Administrator UpdateStaff(Administrator administartor)
         {
-            var index = Program.administratorList.FindIndex(c => c.AdminStaffId == Staff.UpdateDeleteId);
             int updateOptions;
             bool administratorContinue = true;
             do
@@ -34,18 +32,26 @@ namespace training
                 {
                     case 1:
                         Console.WriteLine("Enter new Name:");
-                        Program.administratorList[index].StaffName = Console.ReadLine();
+                        administartor.StaffName = Console.ReadLine();
                         break;
                     case 2:
                         Console.WriteLine("Enter Department:");
-                        Program.administratorList[index].AdministratorDepartment = Console.ReadLine();
+                        administartor.AdministratorDepartment = Console.ReadLine();
                         break;
                     case 3:
                         administratorContinue = false;
                         break;
                 }
             } while (administratorContinue);
-            Console.WriteLine("Administrator");
+            return administartor;
+        }
+
+        public static void ViewStaffs(Administrator administrator)
+        {
+            
+            Console.WriteLine(administrator.StaffId + "\t" + administrator.StaffName + "\t" + administrator.StaffAge + "\t" + administrator.AdministratorDepartment);
+            
+
         }
     }
 }
