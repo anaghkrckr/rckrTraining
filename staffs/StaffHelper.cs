@@ -3,27 +3,24 @@ using System.Collections.Generic;
 
 
 namespace training{
-    class HelperMethods:Staff
+    class StaffHelper:Staff
     {
         public static Staff StaffAdd(String staffType, int StaffId, List<Staff> staffs)
         {
             switch (staffType)
             {
                 case "Teacher":
-                    Staff teacher = new Teacher();
-                    teacher.StaffId = StaffId;
+                    Staff teacher = new Teacher{StaffId = StaffId};
                     teacher.AddStaff(staffs,staffType);
                     return teacher;
 
                 case "Administrator":
-                    Staff administrator = new Administrator();
-                    administrator.StaffId = StaffId;
+                    Staff administrator = new Administrator{StaffId = StaffId};
                     administrator.AddStaff(staffs,staffType);
                     return administrator;
 
                 case "Support":
-                    Staff support = new Support();
-                    support.StaffId = StaffId;
+                    Staff support = new Support { StaffId = StaffId };
                     support.AddStaff(staffs,staffType);
                     return support;
             }
@@ -33,7 +30,7 @@ namespace training{
 
         public static void StaffUpdate(List<Staff> staffs)
         {
-            var index=HelperMethods.getStaff(staffs);
+            var index=StaffHelper.GetStaff(staffs);
             String staffType = staffs[index].StaffType;
             switch (staffType)
             {
@@ -62,7 +59,7 @@ namespace training{
 
         public static void StaffView(List<Staff> staffs)
         {
-            var index = HelperMethods.getStaff(staffs);
+            var index = StaffHelper.GetStaff(staffs);
             string staffType = staffs[index].StaffType;
             switch (staffType)
             {
@@ -83,19 +80,19 @@ namespace training{
             }
         }
 
-        private static int getStaff(List<Staff> staffs)
+        private static int GetStaff(List<Staff> staffs)
         {
             Console.Write("Enter staff Id:");
-            int UpdateDeleteViewId = Convert.ToInt32(Console.ReadLine());
-            var index = staffs.FindIndex(c => c.StaffId == UpdateDeleteViewId);
+            int StaffId = Convert.ToInt32(Console.ReadLine());
+            var index = staffs.FindIndex(c => c.StaffId == StaffId);
             return index;
         }
 
         public static void DeleteStaff(List<Staff> staffs)
         {
             Console.Write("Enter staff Id:");
-            int UpdateDeleteViewId = Convert.ToInt32(Console.ReadLine());
-            staffs.RemoveAt(UpdateDeleteId);
+            int StaffId = Convert.ToInt32(Console.ReadLine());
+            staffs.RemoveAt(StaffId);
         }
     }
 }

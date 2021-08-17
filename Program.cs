@@ -6,13 +6,8 @@ namespace training
 {
     class Program
     {
-        public static List<Teacher> teacherList = new List<Teacher>();
-        public static List<Administrator> administratorList = new List<Administrator>();
-        public static List<Support> supportList = new List<Support>();
-        
         public static int StaffId { get; set; }
-
-        public static List<Staff> staffs = new List<Staff>();
+        public static List<Staff> staffs = new();
 
         static void Main(string[] args){
             Program.SelectStaff();    
@@ -46,7 +41,7 @@ namespace training
         private static void MainActions(String staffType){
 
             int mainOptions;
-            bool continueMainActions = true;
+            bool continueMainActions;
            
             do{
                 Console.WriteLine("WLECOME TO {0} STAFF PORTAL\nselect Options\n1)Add staff\n2)Delete staff\n3)Update staff details\n4)View staff details", staffType);
@@ -54,18 +49,18 @@ namespace training
                 switch (mainOptions){
                     case 1:
                         Program.StaffId++;
-                        Staff staff = HelperMethods.StaffAdd(staffType, Program.StaffId,Program.staffs);
+                        Staff staff = StaffHelper.StaffAdd(staffType, Program.StaffId,Program.staffs);
                         staffs.Add(staff);
 
                         break;
                     case 2:
-                        HelperMethods.DeleteStaff(Program.staffs);
+                        StaffHelper.DeleteStaff(Program.staffs);
                         break;
                     case 3:
-                        HelperMethods.StaffUpdate( Program.staffs);
+                        StaffHelper.StaffUpdate( Program.staffs);
                         break;
                     case 4:
-                        HelperMethods.StaffView( Program.staffs);
+                        StaffHelper.StaffView( Program.staffs);
                         break;
                 }
                 Console.WriteLine("Do you want to continue?(0/1):");
