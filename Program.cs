@@ -9,6 +9,10 @@ namespace training
         public static List<Teacher> teacherList = new List<Teacher>();
         public static List<Administrator> administratorList = new List<Administrator>();
         public static List<Support> supportList = new List<Support>();
+        
+        public static int StaffId { get; set; }
+
+        public static List<Staff> staffs = new List<Staff>();
 
         static void Main(string[] args){
             Program.SelectStaff();    
@@ -40,23 +44,28 @@ namespace training
 
 
         private static void MainActions(String staffType){
+
             int mainOptions;
             bool continueMainActions = true;
+           
             do{
                 Console.WriteLine("WLECOME TO {0} STAFF PORTAL\nselect Options\n1)Add staff\n2)Delete staff\n3)Update staff details\n4)View staff details", staffType);
                 mainOptions = Convert.ToInt32(Console.ReadLine());
                 switch (mainOptions){
                     case 1:
-                        Staff.StaffAdd(staffType);
+                        Program.StaffId++;
+                        Staff staff = HelperMethods.StaffAdd(staffType, Program.StaffId,Program.staffs);
+                        staffs.Add(staff);
+
                         break;
                     case 2:
-                        Staff.DeleteStaff(staffType);
+                        HelperMethods.DeleteStaff(Program.staffs);
                         break;
                     case 3:
-                        Staff.UpdateStaff(staffType);
+                        HelperMethods.StaffUpdate( Program.staffs);
                         break;
                     case 4:
-                        Staff.StaffView(staffType);
+                        HelperMethods.StaffView( Program.staffs);
                         break;
                 }
                 Console.WriteLine("Do you want to continue?(0/1):");
