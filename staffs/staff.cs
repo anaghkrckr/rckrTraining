@@ -20,11 +20,12 @@ namespace training{
         public int StaffAge {
             get => staffAge;
             set {
-                if (value != 0) {
-                    staffAge = value;
-                }
-            }
+                staffAge = value;
+            }   
+                
+            
         }
+
         public string StaffType { get; set; }
 
         public virtual void AddStaff(List<Staff> staffs, String staffType) {
