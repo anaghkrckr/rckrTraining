@@ -41,7 +41,7 @@ namespace training
 
         public static void ViewStaffs(Administrator administrator)
         {
-            Console.WriteLine(administrator.StaffId + "\t" + administrator.StaffName + "\t" + administrator.StaffAge + "\t" + administrator.AdministratorDepartment + "\t" + administrator.StaffType);
+            Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2} ADMINISTRATOR DEPARTMENT: {3} ", administrator.StaffId, administrator.StaffName, administrator.StaffAge, administrator.AdministratorDepartment);
         }
     }
 }

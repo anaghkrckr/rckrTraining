@@ -39,7 +39,7 @@ namespace training
         }
 
         public static void ViewStaffs(Teacher teacher) {
-            Console.WriteLine(teacher.StaffId + "\t" + teacher.StaffName + "\t" + teacher.StaffAge + "\t" + teacher.Subject+"\t"+teacher.StaffType);
+            Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2}  SUBJECT: {3} ", teacher.StaffId, teacher.StaffName, teacher.StaffAge, teacher.Subject);
         }
     }
 }
