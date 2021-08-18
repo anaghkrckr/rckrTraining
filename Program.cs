@@ -6,8 +6,8 @@ namespace training
 {
     class Program
     {
-        public static int StaffId { get; set; }
-        public static List<Staff> staffs = new();
+        public static int StaffId;
+        public static List<Staff> staffs = new List<Staff>();
 
         static void Main(string[] args){
             Program.SelectStaff();    
@@ -17,7 +17,7 @@ namespace training
             int staffOptions;
             bool continueStaffSelection=true;
             do{
-                Console.WriteLine("Select the type of staff\n1)Teacher\n2)Administrator\n3)Support\n4)QUIT");
+                Console.WriteLine("Select the type of staff\n1)Teacher\n2)Administrator\n3)Support\n4)View All Staffs\n5)QUIT");
                 staffOptions=Convert.ToInt32(Console.ReadLine());
                
                     switch(staffOptions){
@@ -31,6 +31,9 @@ namespace training
                             Program.MainActions("Support");
                             break;
                         case 4:
+                            Staff.ViewAll(staffs);
+                            break;
+                        case 5:
                             continueStaffSelection=false;
                             break;
                         }

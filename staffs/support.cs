@@ -4,50 +4,39 @@ using System.Collections.Generic;
 
 namespace training
 {
-    public class Support : Staff
-    {
-        public string SupportDepartment { get; set; }
+    public class Support : Staff {
+        private string supportDepartment;
 
-        public override void AddStaff(List<Staff> staffs,String staffType)
-        {
-            base.AddStaff(staffs,staffType);
+        public string SupportDepartment {
+            get => supportDepartment;
+            set {
+                if (value != "") {
+                    supportDepartment = value;
+                }
+            }
+        }
+
+        public override void AddStaff(List<Staff> staffs, String staffType) {
+            base.AddStaff(staffs, staffType);
             Console.WriteLine("Department:");
             this.SupportDepartment = Console.ReadLine();
             Console.WriteLine("StaffId\tName\tAge\tDepartment");
             Console.WriteLine(this.StaffId + "\t" + this.StaffName + "\t" + this.StaffAge + "\t" + this.SupportDepartment);
         }
 
-        public static Support UpdateStaff(Support support)
-        {
-           
-            int updateOptions;
-            bool loop = true;
-            do
-            {
-                Console.WriteLine("Select value to update\n1)Name\n2)Department\n3)Go back\n");
-                updateOptions = Convert.ToInt32(Console.ReadLine());
-                switch (updateOptions)
-                {
-                    case 1:
-                        Console.WriteLine("Enter new Name:");
-                        support.StaffName = Console.ReadLine(); ;
-                        break;
-                    case 2:
-                        Console.WriteLine("Enter Department:");
-                        support.SupportDepartment = Console.ReadLine(); ;
-                        break;
-                    case 3:
-                        loop = false;
-                        break;
-                }
-
-            } while (loop);
+        public static Support UpdateStaff(Support support) {
+            Console.WriteLine("Update values");
+            Console.WriteLine("Name:");
+            support.StaffName = Console.ReadLine();
+            Console.WriteLine("Age: (enter 0 if not change needed)");
+            support.StaffAge = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter Department:");
+            support.SupportDepartment = Console.ReadLine(); ;
             return support;
         }
 
-        public static void ViewStaffs(Support support)
-        {
-           Console.WriteLine(support.StaffId + "\t" + support.StaffName + "\t" + support.StaffAge + "\t" + support.SupportDepartment);
+        public static void ViewStaffs(Support support) {
+            Console.WriteLine(support.StaffId + "\t" + support.StaffName + "\t" + support.StaffAge + "\t" + support.SupportDepartment + "\t" + support.StaffType);
         }
     }
 }
