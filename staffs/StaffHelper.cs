@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace training{
+namespace training {
     class StaffHelper:Staff
     {
         public static Staff StaffAdd(String staffType, int StaffId, List<Staff> staffs)
@@ -25,7 +25,6 @@ namespace training{
                     return support;
             }
             return null;
-
         }
 
         public static void StaffUpdate(List<Staff> staffs)
@@ -90,9 +89,9 @@ namespace training{
 
         public static void DeleteStaff(List<Staff> staffs)
         {
-            Console.Write("Enter staff Id:");
-            int StaffId = Convert.ToInt32(Console.ReadLine());
-            staffs.RemoveAt(StaffId);
+            var index = StaffHelper.GetStaff(staffs);
+            staffs.RemoveAt(index);
+            Console.WriteLine("Deleted");
         }
     }
 }

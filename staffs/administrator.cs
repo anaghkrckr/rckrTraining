@@ -6,7 +6,15 @@ namespace training
 {
     public class Administrator : Staff
     {
-        public string AdministratorDepartment { get; set; }
+        private string administratorDepartment;
+        public string AdministratorDepartment {
+            get => administratorDepartment;
+            set {
+                if (value != "") {
+                    administratorDepartment = value;
+                }
+            }
+        }
 
         public override void AddStaff(List<Staff> staffs,String stafftype)
         {
@@ -19,35 +27,21 @@ namespace training
         }
 
 
-        public static Administrator UpdateStaff(Administrator administartor)
+        public static Administrator UpdateStaff(Administrator administrator)
         {
-            int updateOptions;
-            bool administratorContinue = true;
-            do
-            {
-                Console.WriteLine("Select value to update\n1)Name\n2)Departnemnt\n3)Go back\n");
-                updateOptions = Convert.ToInt32(Console.ReadLine());
-                switch (updateOptions)
-                {
-                    case 1:
-                        Console.WriteLine("Enter new Name:");
-                        administartor.StaffName = Console.ReadLine();
-                        break;
-                    case 2:
-                        Console.WriteLine("Enter Department:");
-                        administartor.AdministratorDepartment = Console.ReadLine();
-                        break;
-                    case 3:
-                        administratorContinue = false;
-                        break;
-                }
-            } while (administratorContinue);
-            return administartor;
+            Console.WriteLine("Update values");
+            Console.WriteLine("Name:");
+            administrator.StaffName = Console.ReadLine();
+            Console.WriteLine("Age: (enter 0 if not change needed)");
+            administrator.StaffAge = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter Department:");
+            administrator.AdministratorDepartment = Console.ReadLine();
+            return administrator;
         }
 
         public static void ViewStaffs(Administrator administrator)
         {
-            Console.WriteLine(administrator.StaffId + "\t" + administrator.StaffName + "\t" + administrator.StaffAge + "\t" + administrator.AdministratorDepartment);
+            Console.WriteLine(administrator.StaffId + "\t" + administrator.StaffName + "\t" + administrator.StaffAge + "\t" + administrator.AdministratorDepartment + "\t" + administrator.StaffType);
         }
     }
 }
