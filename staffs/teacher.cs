@@ -32,14 +32,17 @@ namespace training
             Console.WriteLine("Name:");
             teacher.StaffName = Console.ReadLine();
             Console.WriteLine("Age: (enter 0 if not change needed)");
-            teacher.StaffAge = Convert.ToInt32(Console.ReadLine());
+            if(int.TryParse(Console.ReadLine(), out int staffAge)){
+                teacher.StaffAge = staffAge;
+            }
+            
             Console.WriteLine("Enter Subject:");
             teacher.Subject = Console.ReadLine();
             return teacher;
         }
 
         public static void ViewStaffs(Teacher teacher) {
-            Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2}  SUBJECT: {3} ", teacher.StaffId, teacher.StaffName, teacher.StaffAge, teacher.Subject);
+            Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2}  SUBJECT: {3} ", teacher.StaffId, teacher.StaffName, teacher.StaffAge, teacher.subject);
         }
     }
 }
