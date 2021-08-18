@@ -37,23 +37,26 @@ namespace training{
 
         public virtual void UpdateStaff() { }
 
-        public static void ViewAll(List<Staff> staffs) {
+        public static void ViewAll(List<Staff> staffs,string staffType) {
             foreach(Staff staff in staffs) {
-                switch (staff.StaffType) {
-                    case "Teacher":
-                        Teacher teacher = (Teacher)staff;
-                        Teacher.ViewStaffs(teacher);
-                        break;
+                if (staff.StaffType == staffType) {
+                    switch (staffType) {
+                            case "Teacher":
+                                Teacher teacher = (Teacher)staff;
+                                Teacher.ViewStaffs(teacher);
+                                break;
 
-                    case "Administrator":
-                        Administrator administrator = (Administrator)staff;
-                        Administrator.ViewStaffs(administrator);
-                        break;
+                            case "Administrator":
+                                Administrator administrator = (Administrator)staff;
+                                Administrator.ViewStaffs(administrator);
+                                break;
 
-                    case "Support":
-                        Support support = (Support)staff;
-                        Support.ViewStaffs(support);
-                        break;
+                            case "Support":
+                                Support support = (Support)staff;
+                                Support.ViewStaffs(support);
+                                break;
+                    }
+                
                 }
 
 

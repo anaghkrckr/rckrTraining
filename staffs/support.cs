@@ -36,7 +36,7 @@ namespace training
         }
 
         public static void ViewStaffs(Support support) {
-            Console.WriteLine(support.StaffId + "\t" + support.StaffName + "\t" + support.StaffAge + "\t" + support.SupportDepartment + "\t" + support.StaffType);
+            Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2} SUPPORT DEPARTMENT: {3} ",support.StaffId ,support.StaffName ,support.StaffAge ,support.SupportDepartment );
         }
     }
 }
