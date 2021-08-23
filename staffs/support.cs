@@ -1,42 +1,57 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
+namespace StaffManagementApp.staffs {
 
-namespace training
-{
     public class Support : Staff {
         private string supportDepartment;
 
         public string SupportDepartment {
             get => supportDepartment;
             set {
-                if (value != "") {
+                if (string.IsNullOrEmpty(SupportDepartment) && string.IsNullOrWhiteSpace(value)) {
+                    throw new Exception($"{nameof(SupportDepartment)} cannot be empty");
+                }
+                else if (value.Any(char.IsDigit)) {
+                    throw new Exception($"{nameof(SupportDepartment)} name should not contain digits");
+                }
+                else if (value.Length > 0 && value.Length <= 3) {
+                    throw new Exception($"{nameof(SupportDepartment)} name length should be greater than 3");
+                }
+                else if (value.Length > 3) {
                     supportDepartment = value;
                 }
             }
         }
 
-        public override void AddStaff(List<Staff> staffs, String staffType) {
+        public override void AddStaff(List<Staff> staffs, string staffType) {
             base.AddStaff(staffs, staffType);
-            Console.WriteLine("Department:");
-            this.SupportDepartment = Console.ReadLine();
+            do {
+                try {
+                    Console.WriteLine("Department:");
+                    SupportDepartment = Console.ReadLine();
+                    break;
+                }
+                catch (Exception e) {
+                    Console.WriteLine(e.Message);
+                }
+
+            } while (string.IsNullOrEmpty(SupportDepartment));
+            
             Console.WriteLine("StaffId\tName\tAge\tDepartment");
-            Console.WriteLine(this.StaffId + "\t" + this.StaffName + "\t" + this.StaffAge + "\t" + this.SupportDepartment);
+            Console.WriteLine(StaffId + "\t" + StaffName + "\t" + StaffAge + "\t" + SupportDepartment);
         }
 
-        public static Support UpdateStaff(Support support) {
-            Console.WriteLine("Update values");
-            Console.WriteLine("Name:");
-            support.StaffName = Console.ReadLine();
-            Console.WriteLine("Age: (enter 0 if not change needed)");
-            support.StaffAge = Convert.ToInt32(Console.ReadLine());
+        public override Support UpdateStaff() {
+            base.UpdateStaff();
             Console.WriteLine("Enter Department:");
-            support.SupportDepartment = Console.ReadLine(); ;
-            return support;
+            SupportDepartment = Console.ReadLine();
+            return this;
         }
 
-        public static void ViewStaffs(Support support) {
-            Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2} SUPPORT DEPARTMENT: {3} ",support.StaffId ,support.StaffName ,support.StaffAge ,support.SupportDepartment );
+        public override void ViewStaff() {
+            Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2} SUPPORT DEPARTMENT: {3} ", StaffId, StaffName, StaffAge, SupportDepartment);
         }
     }
 }
