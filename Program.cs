@@ -1,17 +1,26 @@
-﻿using StaffManagementApp.Serialization;
+﻿using StaffManagementApp.Database;
+using StaffManagementApp.Serialization;
 using StaffManagementApp.staffs;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace StaffManagementApp {
 
     public class Program {
+       
+        
         public static List<Staff> staffs = new List<Staff>();
 
         public static int StaffId { get; set; }
 
+        
+
+
         private static void Main(string[] args) {
+            Sql.ConnectDatabase();
             SelectStaff();
+            //SqlConnect.ConnectDatabase();
         }
 
         public static void SelectStaff() {

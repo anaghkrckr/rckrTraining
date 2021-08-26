@@ -1,3 +1,4 @@
+using StaffManagementApp.Database;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,7 @@ namespace StaffManagementApp.staffs {
     [KnownType(typeof(Teacher))]
     [KnownType(typeof(Administrator))]
     [KnownType(typeof(Support))]
-    public abstract class Staff {
+    public class Staff {
        
         private string staffName;
         private int staffAge;
@@ -108,28 +109,31 @@ namespace StaffManagementApp.staffs {
             return this;
         }
 
-        public abstract void ViewStaff();
+        public virtual void ViewStaff() { }
 
         
 
         public static void ViewAll(List<Staff> staffs, string staffType) {
-            foreach (Staff staff in staffs) {
-                if (staff.StaffType == staffType) {
-                    switch (staffType) {
-                        case nameof(Teacher):
-                            Teacher teacher = (Teacher)staff;
-                            teacher.ViewStaff();
-                            break;
+            staffs=Sql.DatabaseViewAll();
+            if (staffs != null) {
+                foreach (Staff staff in staffs ) {
+                    if (staff.StaffType == staffType  ) {
+                        switch (staffType) {
+                            case nameof(Teacher):
+                                Teacher teacher = (Teacher)staff;
+                                teacher.ViewStaff();
+                                break;
 
-                        case nameof(Administrator):
-                            Administrator administrator = (Administrator)staff;
-                            administrator.ViewStaff();
-                            break;
+                            case nameof(Administrator):
+                                Administrator administrator = (Administrator)staff;
+                                administrator.ViewStaff();
+                                break;
 
-                        case nameof(Support):
-                            Support support = (Support)staff;
-                            support.ViewStaff();
-                            break;
+                            case nameof(Support):
+                                Support support = (Support)staff;
+                                support.ViewStaff();
+                                break;
+                        }
                     }
                 }
             }
