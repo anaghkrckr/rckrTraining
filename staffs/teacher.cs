@@ -60,5 +60,13 @@ namespace StaffManagementApp.staffs {
         public override void ViewStaff() {
             Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2}  SUBJECT: {3} ", StaffId, StaffName, StaffAge, Subject);
         }
+
+
+
+
+
+
+
+
     }
 }
