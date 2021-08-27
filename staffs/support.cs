@@ -1,5 +1,5 @@
+using StaffManagementApp.Database;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace StaffManagementApp.staffs {
@@ -25,8 +25,8 @@ namespace StaffManagementApp.staffs {
             }
         }
 
-        public override void AddStaff(List<Staff> staffs, string staffType) {
-            base.AddStaff(staffs, staffType);
+        public override void AddStaff( string staffType) {
+            base.AddStaff(staffType);
             do {
                 try {
                     Console.WriteLine("Department:");
@@ -38,7 +38,7 @@ namespace StaffManagementApp.staffs {
                 }
 
             } while (string.IsNullOrEmpty(SupportDepartment));
-            
+            StaffId = Sql.DatabaseAddStaff(this);
             Console.WriteLine("StaffId\tName\tAge\tDepartment");
             Console.WriteLine(StaffId + "\t" + StaffName + "\t" + StaffAge + "\t" + SupportDepartment);
         }

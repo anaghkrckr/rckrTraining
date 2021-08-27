@@ -1,7 +1,6 @@
 using StaffManagementApp.Database;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
@@ -53,7 +52,7 @@ namespace StaffManagementApp.staffs {
             }
         }
 
-        public virtual void AddStaff(List<Staff> staffs, string staffType) {
+        public virtual void AddStaff( string staffType) {
             do {
                 try {
 
@@ -76,6 +75,7 @@ namespace StaffManagementApp.staffs {
                     Console.WriteLine(e.Message);
                 }
             } while (this.StaffAge == 0);
+
             this.StaffType = staffType;
         }
 
@@ -113,8 +113,8 @@ namespace StaffManagementApp.staffs {
 
         
 
-        public static void ViewAll(List<Staff> staffs, string staffType) {
-            staffs=Sql.DatabaseViewAll();
+        public static void ViewAll(string staffType) {
+            List<Staff> staffs=Sql.DatabaseViewAll();
             if (staffs != null) {
                 foreach (Staff staff in staffs ) {
                     if (staff.StaffType == staffType  ) {
