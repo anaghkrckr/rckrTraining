@@ -1,6 +1,5 @@
+using StaffManagementApp.Database;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace StaffManagementApp.staffs {
@@ -25,8 +24,8 @@ namespace StaffManagementApp.staffs {
             }
         }
 
-        public override void AddStaff(List<Staff> staffs, string staffType) {
-            base.AddStaff(staffs, staffType);
+        public override void AddStaff( string staffType) {
+            base.AddStaff( staffType);
             do {
                 try {
                     Console.WriteLine("Subject:");
@@ -37,7 +36,7 @@ namespace StaffManagementApp.staffs {
                     Console.WriteLine(e.Message);
                 }
             } while (string.IsNullOrEmpty(Subject));
-
+            StaffId = Sql.DatabaseAddStaff(this);
             Console.WriteLine("StaffId\tName\tAge\tSubject");
             Console.WriteLine(StaffId + "\t" + StaffName + "\t" + StaffAge + "\t" + Subject);
         }

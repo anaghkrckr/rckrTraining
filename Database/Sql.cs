@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
 using StaffManagementApp.staffs;
@@ -12,6 +9,7 @@ namespace StaffManagementApp.Database {
 
         private static readonly string conString = "Data Source=DESKTOP-6J5224R;Initial Catalog=StaffDB;User ID=sa;Password=sa123";
         private static SqlConnection con;
+        
 
         public static void ConnectDatabase() {
             try {
@@ -22,7 +20,7 @@ namespace StaffManagementApp.Database {
             }
         }
 
-        public static void DatabaseAddStaff(Staff staff) {
+        public static int DatabaseAddStaff(Staff staff) {
             try {
 
                 SqlCommand command = con.CreateCommand();
@@ -30,8 +28,9 @@ namespace StaffManagementApp.Database {
                 command = AddParameters(staff, command);
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "procAddStaff";
-                command.ExecuteNonQuery();
+                int staffId=(int)command.ExecuteScalar();
                 Console.WriteLine("Added to database");
+                return staffId;
             }
             catch (SqlException e) {
                 Console.WriteLine(e.Message);
@@ -39,6 +38,7 @@ namespace StaffManagementApp.Database {
             finally {
                 con.Close();
             }
+            return 0;
         }
 
         public static void DatabaseDeleteStaff(int staffId) {
@@ -139,7 +139,7 @@ namespace StaffManagementApp.Database {
 
 
             private static SqlCommand AddParameters(Staff staff, SqlCommand command) {
-                command.Parameters.Add("@StaffName", SqlDbType.VarChar, 30).Value = staff.StaffName;
+                command.Parameters.Add("@StaffName", SqlDbType.NVarChar, 30).Value = staff.StaffName;
                 command.Parameters.Add("@StaffAge", SqlDbType.Int).Value = staff.StaffAge;
                 command.Parameters.Add("@StaffType", SqlDbType.VarChar, 20).Value = staff.StaffType;
                 switch (staff.StaffType) {
@@ -192,6 +192,49 @@ namespace StaffManagementApp.Database {
                 }
             return staff;
             }
+
+            public static void DatabaseAddBulk() {
+                DataTable tbl = new DataTable();
+                tbl.Columns.Add("StaffName", typeof(string));
+                tbl.Columns.Add("StaffAge", typeof(int));
+                tbl.Columns.Add("StaffType", typeof(string));
+                tbl.Columns.Add("StaffDepartment", typeof(string));
+            foreach (Staff staff in Program.staffs) {
+                    switch (staff.StaffType) {
+                        case nameof(Teacher):
+                            tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Teacher)staff).Subject);
+                            break;
+
+                        case nameof(Administrator):
+                            tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Administrator)staff).AdministratorDepartment);
+
+                            break;
+
+                        case nameof(Support):
+                            tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Support)staff).SupportDepartment);
+                            break;
+                    }
+                }
+                SqlCommand command = con.CreateCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "procInsertStaffs";
+                command.Parameters.AddWithValue("tableStaff", tbl);
+                con.Open();
+                try {
+                    command.ExecuteNonQuery();
+
+                }
+                catch (SqlException e) {
+
+                    Console.WriteLine(e.Message);
+                }
+                finally {
+
+                    con.Close();
+                }
+
+            }
+
         }
     }
 

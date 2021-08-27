@@ -3,7 +3,6 @@ using StaffManagementApp.Serialization;
 using StaffManagementApp.staffs;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 
 namespace StaffManagementApp {
 
@@ -20,7 +19,6 @@ namespace StaffManagementApp {
         private static void Main(string[] args) {
             Sql.ConnectDatabase();
             SelectStaff();
-            //SqlConnect.ConnectDatabase();
         }
 
         public static void SelectStaff() {
@@ -46,7 +44,7 @@ namespace StaffManagementApp {
                         break;
 
                     case 4:
-                        serialiseData.StaffSerialize(staffs);
+                        Sql.DatabaseAddBulk();
                         break;
 
                     case 5:
@@ -70,24 +68,24 @@ namespace StaffManagementApp {
                 switch (mainOptions) {
                     case 1:
                         StaffId++;
-                        Staff staff = StaffHelper.StaffAdd(staffType, StaffId, staffs);
+                        Staff staff = StaffHelper.StaffAdd(staffType);
                         staffs.Add(staff);
                         break;
 
                     case 2:
-                        StaffHelper.DeleteStaff(staffs, staffType);
+                        StaffHelper.DeleteStaff( staffType);
                         break;
 
                     case 3:
-                        StaffHelper.StaffUpdate(staffs, staffType);
+                        StaffHelper.StaffUpdate( staffType);
                         break;
 
                     case 4:
-                        StaffHelper.StaffView(staffs, staffType);
+                        StaffHelper.StaffView( staffType);
                         break;
 
                     case 5:
-                        Staff.ViewAll(staffs, staffType);
+                        Staff.ViewAll(staffType);
                         break;
                 }
                 Console.WriteLine("Do you want to continue?(0/1):");
