@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
+using System.Configuration;
 
 namespace StaffManagementApp.Serialization
 {
@@ -23,7 +24,7 @@ namespace StaffManagementApp.Serialization
 
         public List<Staff> StaffDeSerialize()
         {
-            var fileName = "ggg.json";
+            var fileName = ConfigurationManager.AppSettings["SerializationFilename"];
             using (var stream = new FileStream(fileName, FileMode.Open))
             {
                 DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(List<Staff>));
