@@ -18,7 +18,6 @@ namespace StaffManagementApp.Serialization {
         }
 
         public List<Staff> StaffDeSerialize() {
-            //Console.Write("Enter the output filenme: ");
             var fileName = "ggg.json";
             using (var stream = new FileStream(fileName, FileMode.Open)) {
                 DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(List<Staff>));

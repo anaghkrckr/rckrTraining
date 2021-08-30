@@ -1,5 +1,11 @@
 .gitignore
-/bin/*
-/obj/*
-/.vsccode/*
 /.vs/*
+/.vscode/*
+hgjg.scmp
+StaffManagementApp/bin/*
+StaffManagementApp/obj/*
+StaffManagementApp/.vscode/*
+StaffManagementApp/.vs/*
+StaffManagementDb/bin/*
+StaffManagementDb/obj/*
+StaffManagementDb/StaffManagementDb.sqlproj.user

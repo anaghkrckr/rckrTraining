@@ -24,8 +24,8 @@ namespace StaffManagementApp.staffs {
             }
         }
 
-        public override void AddStaff( string staffType) {
-            base.AddStaff( staffType);
+        public override void AddStaff(string staffType) {
+            base.AddStaff(staffType);
             do {
                 try {
                     Console.WriteLine("Subject:");
@@ -36,7 +36,7 @@ namespace StaffManagementApp.staffs {
                     Console.WriteLine(e.Message);
                 }
             } while (string.IsNullOrEmpty(Subject));
-            StaffId = Sql.DatabaseAddStaff(this);
+            StaffId = DatabasManagemantSQL.DatabaseAddStaff(this);
             Console.WriteLine("StaffId\tName\tAge\tSubject");
             Console.WriteLine(StaffId + "\t" + StaffName + "\t" + StaffAge + "\t" + Subject);
         }
@@ -52,20 +52,12 @@ namespace StaffManagementApp.staffs {
                 catch (Exception e) {
                     Console.WriteLine(e.Message);
                 }
-            } while (Subject.Length>0);
+            } while (Subject.Length > 0);
             return this;
         }
 
         public override void ViewStaff() {
             Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2}  SUBJECT: {3} ", StaffId, StaffName, StaffAge, Subject);
         }
-
-
-
-
-
-
-
-
     }
 }

@@ -9,8 +9,6 @@
 );
 
 
-
-
 GO
 CREATE TRIGGER [dbo].[trgAddUpdateDOB]
 ON [dbo].[Staff]

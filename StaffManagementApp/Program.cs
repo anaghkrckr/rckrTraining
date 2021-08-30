@@ -7,17 +7,14 @@ using System.Collections.Generic;
 namespace StaffManagementApp {
 
     public class Program {
-       
-        
+
+
         public static List<Staff> staffs = new List<Staff>();
 
         public static int StaffId { get; set; }
 
-        
-
-
         private static void Main(string[] args) {
-            Sql.ConnectDatabase();
+            DatabasManagemantSQL.ConnectDatabase();
             SelectStaff();
         }
 
@@ -25,7 +22,7 @@ namespace StaffManagementApp {
             int staffOptions;
             bool continueStaffSelection = true;
             do {
-                Console.WriteLine("Select the type of staff\n1){0}\n2){1}\n3){2}\n4)Export Data\n5)Import Data\n6)QUIT",nameof(Teacher),nameof(Administrator),nameof(Support));
+                Console.WriteLine("Select the type of staff\n1){0}\n2){1}\n3){2}\n4)Export Data\n5)Import Data\n6)QUIT", nameof(Teacher), nameof(Administrator), nameof(Support));
                 staffOptions = Convert.ToInt32(Console.ReadLine());
                 ISerialiseStaff serialiseData;
                 serialiseData = new SerializationJSONHelper();
@@ -44,7 +41,7 @@ namespace StaffManagementApp {
                         break;
 
                     case 4:
-                        Sql.DatabaseAddBulk();
+                        DatabasManagemantSQL.DatabaseAddBulk();
                         break;
 
                     case 5:
@@ -73,15 +70,15 @@ namespace StaffManagementApp {
                         break;
 
                     case 2:
-                        StaffHelper.DeleteStaff( staffType);
+                        StaffHelper.DeleteStaff(staffType);
                         break;
 
                     case 3:
-                        StaffHelper.StaffUpdate( staffType);
+                        StaffHelper.StaffUpdate(staffType);
                         break;
 
                     case 4:
-                        StaffHelper.StaffView( staffType);
+                        StaffHelper.StaffView(staffType);
                         break;
 
                     case 5:

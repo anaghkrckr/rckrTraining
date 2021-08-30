@@ -14,7 +14,7 @@ namespace StaffManagementApp.staffs {
     [KnownType(typeof(Administrator))]
     [KnownType(typeof(Support))]
     public class Staff {
-       
+
         private string staffName;
         private int staffAge;
 
@@ -34,17 +34,18 @@ namespace StaffManagementApp.staffs {
                     throw new Exception("Name length should be greater than 3");
                 }
                 else if (value.Length > 3) {
-                   staffName = value;
+                    staffName = value;
                 }
             }
         }
 
         public int StaffAge {
             get => staffAge;
-            set { if(value<20 || value > 80) {
+            set {
+                if (value < 20 || value > 80) {
                     throw new Exception("Age should be between 20-80");
                 }
-                else  {
+                else {
                     this.staffAge = value;
 
                 }
@@ -52,7 +53,7 @@ namespace StaffManagementApp.staffs {
             }
         }
 
-        public virtual void AddStaff( string staffType) {
+        public virtual void AddStaff(string staffType) {
             do {
                 try {
 
@@ -92,14 +93,14 @@ namespace StaffManagementApp.staffs {
                 catch (Exception e) {
                     Console.WriteLine(e.Message);
                 }
-            } while (this.StaffName.Length>0);
+            } while (this.StaffName.Length > 0);
             bool Updated = true;
             do {
                 Console.WriteLine("Age:");
-                
+
                 try {
 
-                    Updated=int.TryParse(Console.ReadLine(), out this.staffAge);
+                    Updated = int.TryParse(Console.ReadLine(), out this.staffAge);
                     break;
                 }
                 catch (Exception e) {
@@ -111,13 +112,13 @@ namespace StaffManagementApp.staffs {
 
         public virtual void ViewStaff() { }
 
-        
+
 
         public static void ViewAll(string staffType) {
-            List<Staff> staffs=Sql.DatabaseViewAll();
+            List<Staff> staffs = DatabasManagemantSQL.DatabaseViewAll();
             if (staffs != null) {
-                foreach (Staff staff in staffs ) {
-                    if (staff.StaffType == staffType  ) {
+                foreach (Staff staff in staffs) {
+                    if (staff.StaffType == staffType) {
                         switch (staffType) {
                             case nameof(Teacher):
                                 Teacher teacher = (Teacher)staff;
