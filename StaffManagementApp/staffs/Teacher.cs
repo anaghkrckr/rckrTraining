@@ -2,37 +2,49 @@ using StaffManagementApp.Database;
 using System;
 using System.Linq;
 
-namespace StaffManagementApp.staffs {
+namespace StaffManagementApp.Staffs
+{
 
-    public class Teacher : Staff {
+    public class Teacher : Staff
+    {
         private string subject;
-        public string Subject {
+        public string Subject
+        {
             get => subject;
-            set {
-                if (string.IsNullOrEmpty(Subject) && string.IsNullOrWhiteSpace(value)) {
+            set
+            {
+                if (string.IsNullOrEmpty(Subject) && string.IsNullOrWhiteSpace(value))
+                {
                     throw new Exception($"{nameof(Subject)} cannot be empty");
                 }
-                else if (value.Any(char.IsDigit)) {
+                else if (value.Any(char.IsDigit))
+                {
                     throw new Exception($"{nameof(Subject)} name should not contain digits");
                 }
-                else if (value.Length > 0 && value.Length <= 3) {
+                else if (value.Length > 0 && value.Length <= 3)
+                {
                     throw new Exception($"{nameof(Subject)} name length should be greater than 3");
                 }
-                else if (value.Length > 3) {
+                else if (value.Length > 3)
+                {
                     subject = value;
                 }
             }
         }
 
-        public override void AddStaff(string staffType) {
+        public override void AddStaff(string staffType)
+        {
             base.AddStaff(staffType);
-            do {
-                try {
+            do
+            {
+                try
+                {
                     Console.WriteLine("Subject:");
                     Subject = Console.ReadLine();
                     break;
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Console.WriteLine(e.Message);
                 }
             } while (string.IsNullOrEmpty(Subject));
@@ -41,22 +53,27 @@ namespace StaffManagementApp.staffs {
             Console.WriteLine(StaffId + "\t" + StaffName + "\t" + StaffAge + "\t" + Subject);
         }
 
-        public override Teacher UpdateStaff() {
+        public override Teacher UpdateStaff()
+        {
             base.UpdateStaff();
-            do {
-                try {
+            do
+            {
+                try
+                {
                     Console.WriteLine("Subject:");
                     Subject = Console.ReadLine();
                     break;
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Console.WriteLine(e.Message);
                 }
             } while (Subject.Length > 0);
             return this;
         }
 
-        public override void ViewStaff() {
+        public override void ViewStaff()
+        {
             Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2}  SUBJECT: {3} ", StaffId, StaffName, StaffAge, Subject);
         }
     }

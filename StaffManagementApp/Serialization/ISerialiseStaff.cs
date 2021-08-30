@@ -1,9 +1,11 @@
-﻿using StaffManagementApp.staffs;
+﻿using StaffManagementApp.Staffs;
 using System.Collections.Generic;
 
-namespace StaffManagementApp.Serialization {
+namespace StaffManagementApp.Serialization
+{
 
-    public interface ISerialiseStaff {
+    public interface ISerialiseStaff
+    {
 
         public void StaffSerialize(List<Staff> staffs);
 

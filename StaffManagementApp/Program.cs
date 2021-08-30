@@ -1,33 +1,39 @@
 ﻿using StaffManagementApp.Database;
 using StaffManagementApp.Serialization;
-using StaffManagementApp.staffs;
+using StaffManagementApp.Staffs;
 using System;
 using System.Collections.Generic;
 
-namespace StaffManagementApp {
+namespace StaffManagementApp
+{
 
-    public class Program {
+    public class Program
+    {
 
 
         public static List<Staff> staffs = new List<Staff>();
 
         public static int StaffId { get; set; }
 
-        private static void Main(string[] args) {
+        private static void Main(string[] args)
+        {
             DatabasManagemantSQL.ConnectDatabase();
             SelectStaff();
         }
 
-        public static void SelectStaff() {
+        public static void SelectStaff()
+        {
             int staffOptions;
             bool continueStaffSelection = true;
-            do {
+            do
+            {
                 Console.WriteLine("Select the type of staff\n1){0}\n2){1}\n3){2}\n4)Export Data\n5)Import Data\n6)QUIT", nameof(Teacher), nameof(Administrator), nameof(Support));
                 staffOptions = Convert.ToInt32(Console.ReadLine());
                 ISerialiseStaff serialiseData;
                 serialiseData = new SerializationJSONHelper();
 
-                switch (staffOptions) {
+                switch (staffOptions)
+                {
                     case 1:
                         MainActions(nameof(Teacher));
                         break;
@@ -55,14 +61,16 @@ namespace StaffManagementApp {
             } while (continueStaffSelection);
         }
 
-        private static void MainActions(string staffType) {
+        private static void MainActions(string staffType)
+        {
             int mainOptions;
             bool continueMainActions;
-
-            do {
+            do
+            {
                 Console.WriteLine("WLECOME TO {0} STAFF PORTAL\nselect Options\n1)Add staff\n2)Delete staff\n3)Update staff details\n4)View staff details\n5)View All Staffs", staffType);
                 mainOptions = Convert.ToInt32(Console.ReadLine());
-                switch (mainOptions) {
+                switch (mainOptions)
+                {
                     case 1:
                         StaffId++;
                         Staff staff = StaffHelper.StaffAdd(staffType);

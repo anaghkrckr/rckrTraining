@@ -5,7 +5,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
-namespace StaffManagementApp.staffs {
+namespace StaffManagementApp.Staffs
+{
 
     [XmlInclude(typeof(Teacher))]
     [XmlInclude(typeof(Administrator))]
@@ -13,7 +14,8 @@ namespace StaffManagementApp.staffs {
     [KnownType(typeof(Teacher))]
     [KnownType(typeof(Administrator))]
     [KnownType(typeof(Support))]
-    public class Staff {
+    public class Staff
+    {
 
         private string staffName;
         private int staffAge;
@@ -21,58 +23,71 @@ namespace StaffManagementApp.staffs {
         public int StaffId { get; set; }
         public string StaffType { get; set; }
 
-        public string StaffName {
+        public string StaffName
+        {
             get => staffName;
-            set {
-                if (string.IsNullOrEmpty(StaffName) && string.IsNullOrWhiteSpace(value)) {
+            set
+            {
+                if (string.IsNullOrEmpty(StaffName) && string.IsNullOrWhiteSpace(value))
+                {
                     throw new Exception("Name cannot be empty");
                 }
-                else if (value.Any(char.IsDigit)) {
+                else if (value.Any(char.IsDigit))
+                {
                     throw new Exception(" Name should not contain digits");
                 }
-                else if (value.Length > 0 && value.Length <= 3) {
+                else if (value.Length > 0 && value.Length <= 3)
+                {
                     throw new Exception("Name length should be greater than 3");
                 }
-                else if (value.Length > 3) {
+                else if (value.Length > 3)
+                {
                     staffName = value;
                 }
             }
         }
 
-        public int StaffAge {
+        public int StaffAge
+        {
             get => staffAge;
-            set {
-                if (value < 20 || value > 80) {
+            set
+            {
+                if (value < 20 || value > 80)
+                {
                     throw new Exception("Age should be between 20-80");
                 }
-                else {
+                else
+                {
                     this.staffAge = value;
-
                 }
-
             }
         }
 
-        public virtual void AddStaff(string staffType) {
-            do {
-                try {
-
+        public virtual void AddStaff(string staffType)
+        {
+            do
+            {
+                try
+                {
                     Console.WriteLine("Name:");
                     this.StaffName = Console.ReadLine();
                     break;
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Console.WriteLine(e.Message);
                 }
             } while (string.IsNullOrEmpty(this.StaffName));
-            do {
-                try {
-
+            do
+            {
+                try
+                {
                     Console.WriteLine("Age:");
                     this.StaffAge = Convert.ToInt32(Console.ReadLine());
                     break;
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Console.WriteLine(e.Message);
                 }
             } while (this.StaffAge == 0);
@@ -81,29 +96,33 @@ namespace StaffManagementApp.staffs {
         }
 
 
-        public virtual Staff UpdateStaff() {
+        public virtual Staff UpdateStaff()
+        {
             Console.WriteLine("Update values");
-            do {
-                try {
-
+            do
+            {
+                try
+                {
                     Console.WriteLine("Name:");
                     this.StaffName = Console.ReadLine();
                     break;
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Console.WriteLine(e.Message);
                 }
             } while (this.StaffName.Length > 0);
             bool Updated = true;
-            do {
+            do
+            {
                 Console.WriteLine("Age:");
-
-                try {
-
+                try
+                {
                     Updated = int.TryParse(Console.ReadLine(), out this.staffAge);
                     break;
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Console.WriteLine(e.Message);
                 }
             } while (Updated);
@@ -114,12 +133,17 @@ namespace StaffManagementApp.staffs {
 
 
 
-        public static void ViewAll(string staffType) {
+        public static void ViewAll(string staffType)
+        {
             List<Staff> staffs = DatabasManagemantSQL.DatabaseViewAll();
-            if (staffs != null) {
-                foreach (Staff staff in staffs) {
-                    if (staff.StaffType == staffType) {
-                        switch (staffType) {
+            if (staffs != null)
+            {
+                foreach (Staff staff in staffs)
+                {
+                    if (staff.StaffType == staffType)
+                    {
+                        switch (staffType)
+                        {
                             case nameof(Teacher):
                                 Teacher teacher = (Teacher)staff;
                                 teacher.ViewStaff();

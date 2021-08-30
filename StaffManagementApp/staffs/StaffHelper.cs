@@ -1,12 +1,16 @@
 ﻿using StaffManagementApp.Database;
 using System;
 
-namespace StaffManagementApp.staffs {
+namespace StaffManagementApp.Staffs
+{
 
-    public static class StaffHelper {
+    public static class StaffHelper
+    {
 
-        public static Staff StaffAdd(string staffType) {
-            switch (staffType) {
+        public static Staff StaffAdd(string staffType)
+        {
+            switch (staffType)
+            {
                 case nameof(Teacher):
                     Staff teacher = new Teacher();
                     teacher.AddStaff(staffType);
@@ -25,25 +29,28 @@ namespace StaffManagementApp.staffs {
             return null;
         }
 
-        public static void StaffUpdate(string staffType) {
-
+        public static void StaffUpdate(string staffType)
+        {
             Staff staff = GetStaff();
-            if (staff != null) {
-
-                if (staff.StaffType != staffType) {
+            if (staff != null)
+            {
+                if (staff.StaffType != staffType)
+                {
                     Console.WriteLine("ID not found");
                     return;
                 }
                 staff = staff.UpdateStaff();
                 DatabasManagemantSQL.DatabaseUpdateStaff(staff);
             }
-
         }
 
-        public static void StaffView(string staffType) {
+        public static void StaffView(string staffType)
+        {
             Staff staff = GetStaff();
-            if (staff != null) {
-                if (staff.StaffType != staffType) {
+            if (staff != null)
+            {
+                if (staff.StaffType != staffType)
+                {
                     Console.WriteLine("Staff belongs to another type");
                     return;
                 }
@@ -53,24 +60,29 @@ namespace StaffManagementApp.staffs {
 
         }
 
-        private static Staff GetStaff() {
+        private static Staff GetStaff()
+        {
             Console.Write("Enter staff Id:");
             int StaffId = Convert.ToInt32(Console.ReadLine());
             Staff staff = DatabasManagemantSQL.DatabaseGetStaff(StaffId);
             return staff;
         }
 
-        public static void DeleteStaff(string staffType) {
-            try {
+        public static void DeleteStaff(string staffType)
+        {
+            try
+            {
                 Staff staff = GetStaff();
-                if (staff.StaffType != staffType) {
+                if (staff.StaffType != staffType)
+                {
                     Console.WriteLine("Staff belongs to another type");
                     return;
                 }
                 DatabasManagemantSQL.DatabaseDeleteStaff(staff.StaffId);
                 Console.WriteLine("Deleted");
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 Console.WriteLine("Staff id not found");
             }
         }

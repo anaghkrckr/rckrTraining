@@ -9,3 +9,5 @@ StaffManagementApp/.vs/*
 StaffManagementDb/bin/*
 StaffManagementDb/obj/*
 StaffManagementDb/StaffManagementDb.sqlproj.user
+StaffManagementDb/StaffManagementDb.dbmdl
+StaffManagementDb/StaffManagementDb.jfm
