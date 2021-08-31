@@ -14,11 +14,9 @@ namespace StaffManagementApp.Serialization
         {
             Console.Write("Enter the output filenme: ");
             var fileName = Console.ReadLine();
-            using (var stream = new FileStream(fileName, FileMode.Create))
-            {
-                XmlSerializer XML = new XmlSerializer(typeof(List<Staff>));
-                XML.Serialize(stream, staffs);
-            }
+            using var stream = new FileStream(fileName, FileMode.Create);
+            XmlSerializer XML = new XmlSerializer(typeof(List<Staff>));
+            XML.Serialize(stream, staffs);
             Console.WriteLine("Export Succesfull");
         }
 

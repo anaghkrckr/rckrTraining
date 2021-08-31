@@ -11,27 +11,16 @@ namespace StaffManagementApp.Database
     {
 
         private static readonly string conString = ConfigurationManager.AppSettings["ConnectionStringSQLDb"];
-        private static SqlConnection con;
+        private static SqlConnection _connection= new SqlConnection(conString);
 
 
-        public static void ConnectDatabase()
-        {
-            try
-            {
-                con = new SqlConnection(conString);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
 
         public static int DatabaseAddStaff(Staff staff)
         {
             try
             {
-                SqlCommand command = con.CreateCommand();
-                con.Open();
+                SqlCommand command = _connection.CreateCommand();
+                _connection.Open();
                 command = AddParameters(staff, command);
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "procAddStaff";
@@ -45,7 +34,7 @@ namespace StaffManagementApp.Database
             }
             finally
             {
-                con.Close();
+                _connection.Close();
             }
             return 0;
         }
@@ -54,8 +43,8 @@ namespace StaffManagementApp.Database
         {
             try
             {
-                SqlCommand command = con.CreateCommand();
-                con.Open();
+                SqlCommand command = _connection.CreateCommand();
+                _connection.Open();
                 command.CommandText = @"procDeleteStaff";
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@Id", SqlDbType.Int).Value = staffId;
@@ -67,17 +56,17 @@ namespace StaffManagementApp.Database
             }
             finally
             {
-                con.Close();
+                _connection.Close();
             }
         }
 
         public static Staff DatabaseGetStaff(int staffId)
         {
-            SqlCommand command = con.CreateCommand();
+            SqlCommand command = _connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "procGetStaff";
             command.Parameters.Add("@Id", SqlDbType.Int).Value = staffId;
-            con.Open();
+            _connection.Open();
             try
             {
                 SqlDataReader reader = command.ExecuteReader();
@@ -95,18 +84,18 @@ namespace StaffManagementApp.Database
             }
             finally
             {
-                con.Close();
+                _connection.Close();
             }
         }
 
         public static void DatabaseUpdateStaff(Staff staff)
         {
-            SqlCommand command = con.CreateCommand();
+            SqlCommand command = _connection.CreateCommand();
             command = AddParameters(staff, command);
             command.Parameters.Add("@Id", SqlDbType.Int).Value = staff.StaffId;
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "procUpdateStaff";
-            con.Open();
+            _connection.Open();
             try
             {
                 command.ExecuteNonQuery();
@@ -117,7 +106,7 @@ namespace StaffManagementApp.Database
             }
             finally
             {
-                con.Close();
+                _connection.Close();
             }
         }
 
@@ -126,10 +115,10 @@ namespace StaffManagementApp.Database
             List<Staff> staffs = new List<Staff>();
             try
             {
-                SqlCommand command = con.CreateCommand();
+                SqlCommand command = _connection.CreateCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "procGetAll";
-                con.Open();
+                _connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -148,7 +137,7 @@ namespace StaffManagementApp.Database
             }
             finally
             {
-                con.Close();
+                _connection.Close();
             }
         }
 
@@ -237,11 +226,11 @@ namespace StaffManagementApp.Database
                         break;
                 }
             }
-            SqlCommand command = con.CreateCommand();
+            SqlCommand command = _connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "procInsertStaffs";
             command.Parameters.AddWithValue("tableStaff", tbl);
-            con.Open();
+            _connection.Open();
             try
             {
                 command.ExecuteNonQuery();
@@ -252,7 +241,7 @@ namespace StaffManagementApp.Database
             }
             finally
             {
-                con.Close();
+                _connection.Close();
             }
 
         }

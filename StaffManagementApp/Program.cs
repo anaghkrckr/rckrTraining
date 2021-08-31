@@ -1,4 +1,5 @@
-﻿using StaffManagementApp.Database;
+﻿using Microsoft.Extensions.Hosting;
+using StaffManagementApp.Database;
 using StaffManagementApp.Serialization;
 using StaffManagementApp.Staffs;
 using System;
@@ -17,9 +18,11 @@ namespace StaffManagementApp
 
         private static void Main(string[] args)
         {
-            DatabasManagemantSQL.ConnectDatabase();
+           
             SelectStaff();
         }
+
+        
 
         public static void SelectStaff()
         {

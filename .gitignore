@@ -11,3 +11,7 @@ StaffManagementDb/obj/*
 StaffManagementDb/StaffManagementDb.sqlproj.user
 StaffManagementDb/StaffManagementDb.dbmdl
 StaffManagementDb/StaffManagementDb.jfm
+StaffManagementAppAPI/bin/*
+StaffManagementAppAPI/obj/*
+StaffManagementAppAPI/StaffManagementAppAPI.csproj.user
+StaffManagementAPIa/*

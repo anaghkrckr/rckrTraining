@@ -1,10 +1,15 @@
+using Microsoft.AspNetCore.Mvc;
 using StaffManagementApp.Database;
 using System;
 using System.Linq;
+using System.Web.Http;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
+using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace StaffManagementApp.Staffs
 {
-
+    [ApiController]
+    [Route("Teacherr")]
     public class Teacher : Staff
     {
         private string subject;
@@ -75,6 +80,16 @@ namespace StaffManagementApp.Staffs
         public override void ViewStaff()
         {
             Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2}  SUBJECT: {3} ", StaffId, StaffName, StaffAge, Subject);
+
+
+        }
+        [HttpGet]
+        public string ViewStafssf()
+        {
+            //Staff staff = DatabasManagemantSQL.DatabaseGetStaff(20);
+            
+
+            return "hello world!";
         }
     }
 }

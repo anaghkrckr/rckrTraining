@@ -1,8 +1,10 @@
-﻿CREATE FUNCTION funcStaffDob (@age int)
-RETURNS date
-BEGIN
-	DECLARE @dob date
-	SET @dob=DATEADD(yy,-@age,getdate())
-	RETURN  @dob
+﻿CREATE FUNCTION funcStaffDob (@age INT)
+RETURNS DATE
 
+BEGIN
+	DECLARE @dob DATE
+
+	SET @dob = DATEADD(yy, - @age, getdate())
+
+	RETURN @dob
 END
