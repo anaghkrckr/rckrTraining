@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Hosting;
-using StaffManagementApp.Database;
+﻿using StaffManagementApp.Database;
 using StaffManagementApp.Serialization;
 using StaffManagementApp.Staffs;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace StaffManagementApp
 {
@@ -11,6 +11,7 @@ namespace StaffManagementApp
     public class Program
     {
 
+        static DatabaseManagementSQL DbHelper = new DatabaseManagementSQL(ConfigurationManager.AppSettings["ConnectionStringSQLDb"]);
 
         public static List<Staff> staffs = new List<Staff>();
 
@@ -18,11 +19,11 @@ namespace StaffManagementApp
 
         private static void Main(string[] args)
         {
-           
+
             SelectStaff();
         }
 
-        
+
 
         public static void SelectStaff()
         {
@@ -50,7 +51,7 @@ namespace StaffManagementApp
                         break;
 
                     case 4:
-                        DatabasManagemantSQL.DatabaseAddBulk();
+                        DbHelper.DatabaseAddBulk();
                         break;
 
                     case 5:
@@ -76,24 +77,24 @@ namespace StaffManagementApp
                 {
                     case 1:
                         StaffId++;
-                        Staff staff = StaffHelper.StaffAdd(staffType);
+                        Staff staff = StaffHelper.StaffAdd(staffType, DbHelper);
                         staffs.Add(staff);
                         break;
 
                     case 2:
-                        StaffHelper.DeleteStaff(staffType);
+                        StaffHelper.DeleteStaff(staffType, DbHelper);
                         break;
 
                     case 3:
-                        StaffHelper.StaffUpdate(staffType);
+                        StaffHelper.StaffUpdate(staffType, DbHelper);
                         break;
 
                     case 4:
-                        StaffHelper.StaffView(staffType);
+                        StaffHelper.StaffView(staffType, DbHelper);
                         break;
 
                     case 5:
-                        Staff.ViewAll(staffType);
+                        Staff.ViewAll(staffType, DbHelper);
                         break;
                 }
                 Console.WriteLine("Do you want to continue?(0/1):");

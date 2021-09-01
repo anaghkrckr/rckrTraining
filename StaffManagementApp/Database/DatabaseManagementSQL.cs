@@ -1,26 +1,37 @@
-﻿using System;
+﻿using StaffManagementApp.Staffs;
+using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
-using StaffManagementApp.Staffs;
-using System.Configuration;
+using System.Data.SqlClient;
 
 namespace StaffManagementApp.Database
 {
-    class DatabasManagemantSQL
+    public class DatabaseManagementSQL
     {
 
-        private static readonly string conString = ConfigurationManager.AppSettings["ConnectionStringSQLDb"];
-        private static SqlConnection _connection= new SqlConnection(conString);
 
+        private static SqlConnection Connection;
 
-
-        public static int DatabaseAddStaff(Staff staff)
+        public DatabaseManagementSQL(string conString)
         {
             try
             {
-                SqlCommand command = _connection.CreateCommand();
-                _connection.Open();
+                Connection = new SqlConnection(conString);
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+        }
+
+
+
+        public int DatabaseAddStaff(Staff staff)
+        {
+            try
+            {
+                SqlCommand command = Connection.CreateCommand();
+                Connection.Open();
                 command = AddParameters(staff, command);
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "procAddStaff";
@@ -30,21 +41,20 @@ namespace StaffManagementApp.Database
             }
             catch (SqlException e)
             {
-                Console.WriteLine(e.Message);
+                return 0;
             }
             finally
             {
-                _connection.Close();
+                Connection.Close();
             }
-            return 0;
         }
 
-        public static void DatabaseDeleteStaff(int staffId)
+        public void DatabaseDeleteStaff(int staffId)
         {
             try
             {
-                SqlCommand command = _connection.CreateCommand();
-                _connection.Open();
+                SqlCommand command = Connection.CreateCommand();
+                Connection.Open();
                 command.CommandText = @"procDeleteStaff";
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@Id", SqlDbType.Int).Value = staffId;
@@ -52,21 +62,21 @@ namespace StaffManagementApp.Database
             }
             catch (SqlException e)
             {
-                Console.WriteLine(e.Message);
+                return;
             }
             finally
             {
-                _connection.Close();
+                Connection.Close();
             }
         }
 
-        public static Staff DatabaseGetStaff(int staffId)
+        public Staff DatabaseGetStaff(int staffId)
         {
-            SqlCommand command = _connection.CreateCommand();
+            SqlCommand command = Connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "procGetStaff";
             command.Parameters.Add("@Id", SqlDbType.Int).Value = staffId;
-            _connection.Open();
+            Connection.Open();
             try
             {
                 SqlDataReader reader = command.ExecuteReader();
@@ -79,46 +89,47 @@ namespace StaffManagementApp.Database
             }
             catch (SqlException e)
             {
-                Console.WriteLine(e.Message);
                 return null;
             }
             finally
             {
-                _connection.Close();
+                Connection.Close();
             }
         }
 
-        public static void DatabaseUpdateStaff(Staff staff)
+
+
+        public void DatabaseUpdateStaff(Staff staff)
         {
-            SqlCommand command = _connection.CreateCommand();
+            SqlCommand command = Connection.CreateCommand();
             command = AddParameters(staff, command);
             command.Parameters.Add("@Id", SqlDbType.Int).Value = staff.StaffId;
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "procUpdateStaff";
-            _connection.Open();
+            Connection.Open();
             try
             {
                 command.ExecuteNonQuery();
             }
             catch (SqlException e)
             {
-                Console.WriteLine(e.Message);
+                return;
             }
             finally
             {
-                _connection.Close();
+                Connection.Close();
             }
         }
 
-        public static List<Staff> DatabaseViewAll()
+        public List<Staff> DatabaseViewAll()
         {
             List<Staff> staffs = new List<Staff>();
             try
             {
-                SqlCommand command = _connection.CreateCommand();
+                SqlCommand command = Connection.CreateCommand();
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "procGetAll";
-                _connection.Open();
+                Connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -132,12 +143,11 @@ namespace StaffManagementApp.Database
             }
             catch (SqlException e)
             {
-                Console.WriteLine(e.Message);
                 return null;
             }
             finally
             {
-                _connection.Close();
+                Connection.Close();
             }
         }
 
@@ -201,7 +211,7 @@ namespace StaffManagementApp.Database
             return staff;
         }
 
-        public static void DatabaseAddBulk()
+        public void DatabaseAddBulk()
         {
             DataTable tbl = new DataTable();
             tbl.Columns.Add("StaffName", typeof(string));
@@ -226,22 +236,22 @@ namespace StaffManagementApp.Database
                         break;
                 }
             }
-            SqlCommand command = _connection.CreateCommand();
+            SqlCommand command = Connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "procInsertStaffs";
             command.Parameters.AddWithValue("tableStaff", tbl);
-            _connection.Open();
+            Connection.Open();
             try
             {
                 command.ExecuteNonQuery();
             }
             catch (SqlException e)
             {
-                Console.WriteLine(e.Message);
+                return;
             }
             finally
             {
-                _connection.Close();
+                Connection.Close();
             }
 
         }

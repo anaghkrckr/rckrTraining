@@ -63,7 +63,7 @@ namespace StaffManagementApp.Staffs
             }
         }
 
-        public virtual void AddStaff(string staffType)
+        public virtual void AddStaff(string staffType, DatabaseManagementSQL dbHelper)
         {
             do
             {
@@ -133,9 +133,9 @@ namespace StaffManagementApp.Staffs
 
 
 
-        public static void ViewAll(string staffType)
+        public static void ViewAll(string staffType, DatabaseManagementSQL dbHelper)
         {
-            List<Staff> staffs = DatabasManagemantSQL.DatabaseViewAll();
+            List<Staff> staffs = dbHelper.DatabaseViewAll();
             if (staffs != null)
             {
                 foreach (Staff staff in staffs)

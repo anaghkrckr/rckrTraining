@@ -1,17 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
 using StaffManagementApp.Database;
 using System;
 using System.Linq;
-using System.Web.Http;
-using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace StaffManagementApp.Staffs
 {
-    [ApiController]
-    [Route("Teacherr")]
+
     public class Teacher : Staff
     {
+      
+
         private string subject;
         public string Subject
         {
@@ -37,9 +34,9 @@ namespace StaffManagementApp.Staffs
             }
         }
 
-        public override void AddStaff(string staffType)
+        public override void AddStaff(string staffType, DatabaseManagementSQL dbHelper)
         {
-            base.AddStaff(staffType);
+            base.AddStaff(staffType,dbHelper);
             do
             {
                 try
@@ -50,10 +47,10 @@ namespace StaffManagementApp.Staffs
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    throw;
                 }
             } while (string.IsNullOrEmpty(Subject));
-            StaffId = DatabasManagemantSQL.DatabaseAddStaff(this);
+            StaffId = dbHelper.DatabaseAddStaff(this);
             Console.WriteLine("StaffId\tName\tAge\tSubject");
             Console.WriteLine(StaffId + "\t" + StaffName + "\t" + StaffAge + "\t" + Subject);
         }
@@ -80,16 +77,6 @@ namespace StaffManagementApp.Staffs
         public override void ViewStaff()
         {
             Console.WriteLine("ID:{0}\tNAME: {1}\tAGE: {2}  SUBJECT: {3} ", StaffId, StaffName, StaffAge, Subject);
-
-
-        }
-        [HttpGet]
-        public string ViewStafssf()
-        {
-            //Staff staff = DatabasManagemantSQL.DatabaseGetStaff(20);
-            
-
-            return "hello world!";
         }
     }
 }

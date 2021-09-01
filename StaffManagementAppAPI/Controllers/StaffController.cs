@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StaffManagementAppAPI.Models;
-using StaffManagementAppAPI.Services;
-using System;
+using Microsoft.Extensions.Configuration;
+using StaffManagementApp.Database;
+using StaffManagementApp.Staffs;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using static StaffManagementAppAPI.Models.Staff;
 
 namespace StaffManagementAppAPI.Controllers
 {
@@ -13,66 +13,169 @@ namespace StaffManagementAppAPI.Controllers
     public class StaffController : ControllerBase
     {
 
+
+        static IConfiguration ConfigBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+        DatabaseManagementSQL DbHelper = new DatabaseManagementSQL(ConfigBuilder.GetValue<string>("ConnectionString"));
+
+
+
+
         [HttpGet]
-        public ActionResult<List<Staff>> GetStaff()
+        public ActionResult<List<Models.Staff>> GetStaff()
         {
-            return StaffServices.staffs;
+            List<Staff> staffs = DbHelper.DatabaseViewAll().ToList();
+            return staffs.ConvertAll(ConvertStaff);
         }
 
 
         [HttpGet("{staffId:int}")]
-        public ActionResult<Staff> GetStaffById(int staffId)
+        public ActionResult<Models.Staff> GetStaffById(int staffId)
         {
-            Staff staff = StaffServices.staffs.Find(item => item.Id == staffId);
+            Staff staff = DbHelper.DatabaseGetStaff(staffId);
             if (staff == null)
             {
                 return NotFound();
             }
-            return Ok(staff);
+            return ConvertStaff(staff);
+
         }
 
         [HttpGet("{staffType}")]
-        public ActionResult<List<Staff>> GetStaffByType(string staffType)
+        public ActionResult<List<Models.Staff>> GetStaffByType(string staffType)
         {
-
-            var staffs = StaffServices.staffs.Where(item => Enum.GetName(typeof(StaffType), item.Type) == staffType).ToList();
-            
-            return Ok(staffs);
+            List<Models.Staff> staffs = DbHelper.DatabaseViewAll().ConvertAll(ConvertStaff);
+            return staffs.Where(item => item.StaffType == staffType).ToList();
         }
 
         [HttpPost]
-        public ActionResult<Staff> PostStaff(Staff staff)
+        public ActionResult<Staff> PostStaff(Models.Staff staff)
         {
-            
-            StaffServices.staffs.Add(staff);
-            return Ok(staff);
+            Staff StaffNew = null;
+            switch (staff.StaffType)
+            {
+                case nameof(Teacher):
+                    StaffNew = new Teacher
+                    {
+
+                        StaffName = staff.StaffName,
+                        StaffAge = staff.StaffAge,
+                        Subject = staff.Subject,
+                        StaffType = staff.StaffType,
+
+                    };
+                    break;
+
+                case nameof(Administrator):
+                    StaffNew = new Administrator
+                    {
+
+                        StaffName = staff.StaffName,
+                        StaffAge = staff.StaffAge,
+                        AdministratorDepartment = staff.AdministratorDepartment,
+                        StaffType = staff.StaffType,
+
+                    };
+                    break;
+
+                case nameof(Support):
+                    StaffNew = new Support
+                    {
+
+                        StaffName = staff.StaffName,
+                        StaffAge = staff.StaffAge,
+                        SupportDepartment = staff.SupportDepartment,
+                        StaffType = staff.StaffType,
+
+                    };
+                    break;
+            }
+
+            StaffNew.StaffId = DbHelper.DatabaseAddStaff(StaffNew);
+            return Ok(StaffNew);
         }
         [HttpPut]
-        public ActionResult<Staff> UpdateStaff(Staff staff)
+        public ActionResult<Staff> UpdateStaff(Models.Staff staff)
         {
-            StaffServices.staffs[StaffServices.staffs.FindIndex(index => index.Id == staff.Id)] = staff;
-            return Ok(staff);
+            Staff StaffNew = null;
+            switch (staff.StaffType)
+            {
+                case nameof(Teacher):
+                    StaffNew = new Teacher
+                    {
+                       
+                        StaffName = staff.StaffName,
+                        StaffAge = staff.StaffAge,
+                        Subject = staff.Subject,
+                        StaffType = staff.StaffType,
+
+                    };
+                    break;
+
+                case nameof(Administrator):
+                    StaffNew = new Administrator
+                    {
+
+                        StaffName = staff.StaffName,
+                        StaffAge = staff.StaffAge,
+                        AdministratorDepartment = staff.AdministratorDepartment,
+                        StaffType = staff.StaffType,
+
+                    };
+                    break;
+
+                case nameof(Support):
+                    StaffNew = new Support
+                    {
+
+                        StaffName = staff.StaffName,
+                        StaffAge = staff.StaffAge,
+                        SupportDepartment = staff.SupportDepartment,
+                        StaffType = staff.StaffType,
+
+                    };
+                    break;
+            }
+            StaffNew.StaffId = staff.StaffId;
+            DbHelper.DatabaseUpdateStaff(StaffNew);
+            return Ok();
 
         }
         [HttpDelete("{staffId}")]
         public ActionResult<Staff> DeleteStaff(int staffId)
         {
-            int index = StaffServices.staffs.FindIndex(index => index.Id == staffId);
-            Staff staff = StaffServices.staffs[index];
-            StaffServices.staffs.RemoveAt(index);
-            return Ok(staff);
+            DbHelper.DatabaseDeleteStaff(staffId);
+            return Ok("Deleted");
 
         }
 
+        public static Models.Staff ConvertStaff(Staff staff)
+        {
+            Models.Staff staffNew = new Models.Staff
+            {
+                StaffId = staff.StaffId,
+                StaffName = staff.StaffName,
+                StaffAge = staff.StaffAge,
+                StaffType = staff.StaffType,
+            };
 
-        //[HttpGet("{responseCode}")]
-        //public ActionResult<HttpStatusCode> GetStaff(int responseCode)
-        //{
+            switch (staff.StaffType)
+            {
 
+                case nameof(Teacher):
+                    staffNew.Subject = ((Teacher)staff).Subject;
+                    break;
 
-        //    //Enum.TryParse(responseCode.ToString(),true, out HttpStatusCode  c);
-        //    return HttpStatusCode.BadRequest;
-        //}
+                case nameof(Administrator):
+                    staffNew.AdministratorDepartment = ((Administrator)staff).AdministratorDepartment;
+                    break;
+
+                case nameof(Support):
+                    staffNew.SupportDepartment = ((Support)staff).SupportDepartment;
+                    break;
+            }
+
+            return staffNew;
+        }
 
     }
 }

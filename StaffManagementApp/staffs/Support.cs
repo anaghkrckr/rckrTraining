@@ -33,9 +33,9 @@ namespace StaffManagementApp.Staffs
             }
         }
 
-        public override void AddStaff(string staffType)
+        public override void AddStaff(string staffType, DatabaseManagementSQL dbHelper)
         {
-            base.AddStaff(staffType);
+            base.AddStaff(staffType,dbHelper);
             do
             {
                 try
@@ -46,10 +46,10 @@ namespace StaffManagementApp.Staffs
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    throw;
                 }
             } while (string.IsNullOrEmpty(SupportDepartment));
-            StaffId = DatabasManagemantSQL.DatabaseAddStaff(this);
+            StaffId = dbHelper.DatabaseAddStaff(this);
             Console.WriteLine("StaffId\tName\tAge\tDepartment");
             Console.WriteLine(StaffId + "\t" + StaffName + "\t" + StaffAge + "\t" + SupportDepartment);
         }

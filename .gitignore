@@ -14,4 +14,5 @@ StaffManagementDb/StaffManagementDb.jfm
 StaffManagementAppAPI/bin/*
 StaffManagementAppAPI/obj/*
 StaffManagementAppAPI/StaffManagementAppAPI.csproj.user
-StaffManagementAPIa/*
+StaffManagementAppAPI/publish/*
+StaffManagementAppAPI/properties/*
