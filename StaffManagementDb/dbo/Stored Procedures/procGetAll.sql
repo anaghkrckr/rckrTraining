@@ -1,0 +1,13 @@
+﻿CREATE PROCEDURE [dbo].[procGetAll]
+as
+BEGIN
+BEGIN TRY
+	BEGIN TRANSACTION
+		SELECT Id,StaffName,StaffAge,StaffType,StaffDepartment FROM Staff
+	Commit TRANSACTION
+END TRY
+BEGIN CATCH
+	rollback TRANSACTION
+	;THROW
+END CATCH
+END
