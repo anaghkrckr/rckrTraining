@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using StaffManagementApp.Database;
-using StaffManagementApp.Staffs;
+using StaffManagementLibrary.DbHandler;
+using StaffManagementLibrary.Staffs;
+using StaffManagementLibrary.Staffs.HelperClasses;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,8 +16,10 @@ namespace StaffManagementAppAPI.Controllers
     {
 
 
+        
         static IConfiguration ConfigBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
-        DatabaseManagementSQL DbHelper = new DatabaseManagementSQL(ConfigBuilder.GetValue<string>("ConnectionString"));
+        StaffHelper StaffHelper = new StaffHelper();
+        DatabaseSQLHandler DbHelper = new DatabaseSQLHandler(ConfigBuilder.GetValue<string>("ConnectionString"));
 
 
 
@@ -23,130 +27,95 @@ namespace StaffManagementAppAPI.Controllers
         [HttpGet]
         public ActionResult<List<Models.Staff>> GetStaff()
         {
-            List<Staff> staffs = DbHelper.DatabaseViewAll().ToList();
+            List<Staff> staffs = DbHelper.ViewAll().ToList();
             return staffs.ConvertAll(ConvertStaff);
         }
 
 
-        [HttpGet("{staffId:int}")]
-        public ActionResult<Models.Staff> GetStaffById(int staffId)
+        [HttpGet("{staffType}/{staffId:int}")]
+        public ActionResult<Models.Staff> GetStaffById(int staffId,string staffType)
         {
-            Staff staff = DbHelper.DatabaseGetStaff(staffId);
-            if (staff == null)
+            try
             {
-                return NotFound();
+                Staff staff = StaffHelper.StaffGet(staffId, DbHelper, staffType);
+                return ConvertStaff(staff);
+
             }
-            return ConvertStaff(staff);
+            catch (Exception e)
+            {
+
+                return NotFound(e.Message);
+            }
 
         }
 
         [HttpGet("{staffType}")]
         public ActionResult<List<Models.Staff>> GetStaffByType(string staffType)
         {
-            List<Models.Staff> staffs = DbHelper.DatabaseViewAll().ConvertAll(ConvertStaff);
-            return staffs.Where(item => item.StaffType == staffType).ToList();
+            List<Models.Staff> staffs = StaffHelper.StaffGetAllByType(DbHelper).ConvertAll(ConvertStaff);
+            return staffs.Where(item => (item.StaffType).ToLower() == staffType.ToLower()).ToList();
         }
+
+       
 
         [HttpPost]
-        public ActionResult<Staff> PostStaff(Models.Staff staff)
+        public ActionResult<Staff> AddStaff(Models.Staff staff)
         {
-            Staff StaffNew = null;
-            switch (staff.StaffType)
+            try { 
+                Staff StaffNew=ConvertToStaffManagementStaff(staff);
+                StaffNew = StaffHelper.StaffAdd(StaffNew,DbHelper,StaffNew.StaffType);
+                return Ok(StaffNew);
+
+            }
+            catch (Exception e)
             {
-                case nameof(Teacher):
-                    StaffNew = new Teacher
-                    {
 
-                        StaffName = staff.StaffName,
-                        StaffAge = staff.StaffAge,
-                        Subject = staff.Subject,
-                        StaffType = staff.StaffType,
-
-                    };
-                    break;
-
-                case nameof(Administrator):
-                    StaffNew = new Administrator
-                    {
-
-                        StaffName = staff.StaffName,
-                        StaffAge = staff.StaffAge,
-                        AdministratorDepartment = staff.AdministratorDepartment,
-                        StaffType = staff.StaffType,
-
-                    };
-                    break;
-
-                case nameof(Support):
-                    StaffNew = new Support
-                    {
-
-                        StaffName = staff.StaffName,
-                        StaffAge = staff.StaffAge,
-                        SupportDepartment = staff.SupportDepartment,
-                        StaffType = staff.StaffType,
-
-                    };
-                    break;
+                return NotFound(e.Message);
             }
 
-            StaffNew.StaffId = DbHelper.DatabaseAddStaff(StaffNew);
-            return Ok(StaffNew);
         }
-        [HttpPut]
-        public ActionResult<Staff> UpdateStaff(Models.Staff staff)
+
+        [HttpPut("{staffType}/{staffId:int}")]
+        public ActionResult<Staff> UpdateStaff(Models.Staff staff,string staffType,int staffId)
         {
-            Staff StaffNew = null;
-            switch (staff.StaffType)
+            if (staff?.StaffType!=staffType )
             {
-                case nameof(Teacher):
-                    StaffNew = new Teacher
-                    {
-                       
-                        StaffName = staff.StaffName,
-                        StaffAge = staff.StaffAge,
-                        Subject = staff.Subject,
-                        StaffType = staff.StaffType,
-
-                    };
-                    break;
-
-                case nameof(Administrator):
-                    StaffNew = new Administrator
-                    {
-
-                        StaffName = staff.StaffName,
-                        StaffAge = staff.StaffAge,
-                        AdministratorDepartment = staff.AdministratorDepartment,
-                        StaffType = staff.StaffType,
-
-                    };
-                    break;
-
-                case nameof(Support):
-                    StaffNew = new Support
-                    {
-
-                        StaffName = staff.StaffName,
-                        StaffAge = staff.StaffAge,
-                        SupportDepartment = staff.SupportDepartment,
-                        StaffType = staff.StaffType,
-
-                    };
-                    break;
+                return NotFound($"Staff is not a {staffType}");
             }
-            StaffNew.StaffId = staff.StaffId;
-            DbHelper.DatabaseUpdateStaff(StaffNew);
-            return Ok();
 
+            try
+            {
+                Staff StaffNew = ConvertToStaffManagementStaff(staff);
+                StaffNew.StaffId = staffId;
+                StaffNew=StaffHelper.StaffUpdate(StaffNew, DbHelper);
+                return Ok(StaffNew);
+            }
+            catch (Exception e)
+            {
+
+                return NotFound(e.Message);
+            }
         }
-        [HttpDelete("{staffId}")]
-        public ActionResult<Staff> DeleteStaff(int staffId)
+
+
+        [HttpDelete("{staffType}/{staffId}")]
+        public ActionResult<Staff> DeleteStaff(int staffId,string staffType)
         {
-            DbHelper.DatabaseDeleteStaff(staffId);
-            return Ok("Deleted");
+            try
+            {
+                Staff staff = StaffHelper.StaffGet(staffId, DbHelper, staffType);
+                StaffHelper.DeleteStaff(staff, DbHelper, staffType);
+                return Ok("Deleted");
+            }
+            catch (Exception e)
+            {
+
+                return NotFound(e.Message);
+            }
 
         }
+
+
 
         public static Models.Staff ConvertStaff(Staff staff)
         {
@@ -175,6 +144,43 @@ namespace StaffManagementAppAPI.Controllers
             }
 
             return staffNew;
+        }
+
+        private static Staff ConvertToStaffManagementStaff(Models.Staff staff)
+        {
+           
+            Staff StaffNew = null;
+            switch (staff.StaffType)
+            {
+                case nameof(Teacher):
+                    StaffNew = new Teacher
+                    {
+                        Subject = staff.Subject,
+                    };
+                    break;
+
+                case nameof(Administrator):
+                    StaffNew = new Administrator
+                    {
+                        AdministratorDepartment = staff.AdministratorDepartment,
+                    };
+                    break;
+
+                case nameof(Support):
+                    StaffNew = new Support
+                    {
+                        SupportDepartment = staff.SupportDepartment,
+                    };
+                    break;
+            }
+            if (StaffNew==null)
+            {
+                throw new Exception("Staff Type Not Found");
+            }
+            StaffNew.StaffName = staff.StaffName;
+            StaffNew.StaffAge = staff.StaffAge;
+            StaffNew.StaffType = staff.StaffType;
+            return StaffNew;
         }
 
     }

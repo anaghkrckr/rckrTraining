@@ -1,8 +1,8 @@
-using StaffManagementApp.Database;
+using StaffManagementLibrary.DbHandler;
 using System;
 using System.Linq;
 
-namespace StaffManagementApp.Staffs
+namespace StaffManagementLibrary.Staffs
 {
 
     public class Administrator : Staff
@@ -34,7 +34,7 @@ namespace StaffManagementApp.Staffs
         }
 
 
-        public override void AddStaff(string stafftype, DatabaseManagementSQL dbHelper)
+        public override void AddStaff(string stafftype, IDatabase dbHelper)
         {
             base.AddStaff(stafftype,dbHelper);
             do
@@ -50,9 +50,7 @@ namespace StaffManagementApp.Staffs
                     throw;
                 }
             } while (string.IsNullOrEmpty(AdministratorDepartment));
-            StaffId = dbHelper.DatabaseAddStaff(this);
-            Console.WriteLine("StaffId\tName\tAge\tDepartment");
-            Console.WriteLine(StaffId + "\t" + StaffName + "\t" + StaffAge + "\t" + AdministratorDepartment);
+            StaffId = dbHelper.AddStaff(this);
         }
 
         public override Administrator UpdateStaff()

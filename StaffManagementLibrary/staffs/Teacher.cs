@@ -1,9 +1,19 @@
-using StaffManagementApp.Database;
+using StaffManagementLibrary.DbHandler;
 using System;
 using System.Linq;
 
-namespace StaffManagementApp.Staffs
+namespace StaffManagementLibrary.Staffs
 {
+    public class SubjectException :Exception
+    {
+        public override string Message 
+        { 
+            get
+            {
+                return "subject is mandatory";
+            }
+        }
+    }
 
     public class Teacher : Staff
     {
@@ -17,7 +27,8 @@ namespace StaffManagementApp.Staffs
             {
                 if (string.IsNullOrEmpty(Subject) && string.IsNullOrWhiteSpace(value))
                 {
-                    throw new Exception($"{nameof(Subject)} cannot be empty");
+                    //throw new Exception($"{nameof(Subject)} cannot be empty");
+                    throw new SubjectException();
                 }
                 else if (value.Any(char.IsDigit))
                 {
@@ -34,7 +45,7 @@ namespace StaffManagementApp.Staffs
             }
         }
 
-        public override void AddStaff(string staffType, DatabaseManagementSQL dbHelper)
+        public override void AddStaff(string staffType, IDatabase dbHelper)
         {
             base.AddStaff(staffType,dbHelper);
             do
@@ -50,9 +61,7 @@ namespace StaffManagementApp.Staffs
                     throw;
                 }
             } while (string.IsNullOrEmpty(Subject));
-            StaffId = dbHelper.DatabaseAddStaff(this);
-            Console.WriteLine("StaffId\tName\tAge\tSubject");
-            Console.WriteLine(StaffId + "\t" + StaffName + "\t" + StaffAge + "\t" + Subject);
+            
         }
 
         public override Teacher UpdateStaff()

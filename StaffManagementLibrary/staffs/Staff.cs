@@ -1,11 +1,11 @@
-using StaffManagementApp.Database;
+using StaffManagementLibrary.DbHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
-namespace StaffManagementApp.Staffs
+namespace StaffManagementLibrary.Staffs
 {
 
     [XmlInclude(typeof(Teacher))]
@@ -63,7 +63,7 @@ namespace StaffManagementApp.Staffs
             }
         }
 
-        public virtual void AddStaff(string staffType, DatabaseManagementSQL dbHelper)
+        public virtual void AddStaff(string staffType, IDatabase dbHelper)
         {
             do
             {
@@ -75,7 +75,7 @@ namespace StaffManagementApp.Staffs
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    throw;
                 }
             } while (string.IsNullOrEmpty(this.StaffName));
             do
@@ -88,7 +88,7 @@ namespace StaffManagementApp.Staffs
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    throw;
                 }
             } while (this.StaffAge == 0);
 
@@ -109,7 +109,7 @@ namespace StaffManagementApp.Staffs
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    throw;
                 }
             } while (this.StaffName.Length > 0);
             bool Updated = true;
@@ -123,7 +123,7 @@ namespace StaffManagementApp.Staffs
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    throw;
                 }
             } while (Updated);
             return this;
@@ -133,9 +133,9 @@ namespace StaffManagementApp.Staffs
 
 
 
-        public static void ViewAll(string staffType, DatabaseManagementSQL dbHelper)
+        public static void ViewAll(string staffType, IDatabase dbHelper)
         {
-            List<Staff> staffs = dbHelper.DatabaseViewAll();
+            List<Staff> staffs = dbHelper.ViewAll();
             if (staffs != null)
             {
                 foreach (Staff staff in staffs)

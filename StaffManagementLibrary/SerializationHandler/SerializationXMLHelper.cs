@@ -1,10 +1,11 @@
-﻿using StaffManagementApp.Staffs;
+﻿using StaffManagementLibrary.Staffs;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace StaffManagementApp.Serialization
+namespace StaffManagementLibrary.SerializationHandler
 {
 
     public class SerializationXMLHelper : ISerialiseStaff
@@ -12,8 +13,7 @@ namespace StaffManagementApp.Serialization
 
         public void StaffSerialize(List<Staff> staffs)
         {
-            Console.Write("Enter the output filenme: ");
-            var fileName = Console.ReadLine();
+            var fileName =  ConfigurationManager.AppSettings["SerializationFilenameXML"];
             using var stream = new FileStream(fileName, FileMode.Create);
             XmlSerializer XML = new XmlSerializer(typeof(List<Staff>));
             XML.Serialize(stream, staffs);
@@ -22,8 +22,7 @@ namespace StaffManagementApp.Serialization
 
         public List<Staff> StaffDeSerialize()
         {
-            Console.Write("Enter the filenme: ");
-            var fileName = Console.ReadLine();
+            var  fileName = ConfigurationManager.AppSettings["SerializationFilenameXML"];
             using var stream = new FileStream(fileName, FileMode.Open);
             XmlSerializer XML = new XmlSerializer(typeof(List<Staff>));
             List<Staff> staffs = (List<Staff>)XML.Deserialize(stream);

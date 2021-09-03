@@ -5,6 +5,7 @@ hgjg.scmp
 StaffManagementApp/bin/*
 StaffManagementApp/obj/*
 StaffManagementApp/.vscode/*
+StaffManagementApp/Database.zip
 StaffManagementApp/.vs/*
 StaffManagementDb/bin/*
 StaffManagementDb/obj/*
@@ -16,3 +17,5 @@ StaffManagementAppAPI/obj/*
 StaffManagementAppAPI/StaffManagementAppAPI.csproj.user
 StaffManagementAppAPI/publish/*
 StaffManagementAppAPI/properties/*
+StaffManagementLibrary/bin/*
+StaffManagementLibrary/obj/*

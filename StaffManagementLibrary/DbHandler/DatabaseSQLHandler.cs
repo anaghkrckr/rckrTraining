@@ -1,18 +1,18 @@
-﻿using StaffManagementApp.Staffs;
+﻿using StaffManagementLibrary.Staffs;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace StaffManagementApp.Database
+namespace StaffManagementLibrary.DbHandler
 {
-    public class DatabaseManagementSQL
+    public class DatabaseSQLHandler : IDatabase
     {
 
 
         private static SqlConnection Connection;
 
-        public DatabaseManagementSQL(string conString)
+        public DatabaseSQLHandler(string conString)
         {
             try
             {
@@ -20,13 +20,13 @@ namespace StaffManagementApp.Database
             }
             catch (Exception e)
             {
-                return;
+                throw;
             }
         }
 
 
 
-        public int DatabaseAddStaff(Staff staff)
+        public int AddStaff(Staff staff)
         {
             try
             {
@@ -36,12 +36,11 @@ namespace StaffManagementApp.Database
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "procAddStaff";
                 int staffId = (int)command.ExecuteScalar();
-                Console.WriteLine("Added to database");
                 return staffId;
             }
             catch (SqlException e)
             {
-                return 0;
+                throw;
             }
             finally
             {
@@ -49,7 +48,7 @@ namespace StaffManagementApp.Database
             }
         }
 
-        public void DatabaseDeleteStaff(int staffId)
+        public void DeleteStaff(int staffId)
         {
             try
             {
@@ -62,7 +61,7 @@ namespace StaffManagementApp.Database
             }
             catch (SqlException e)
             {
-                return;
+                throw;
             }
             finally
             {
@@ -70,7 +69,7 @@ namespace StaffManagementApp.Database
             }
         }
 
-        public Staff DatabaseGetStaff(int staffId)
+        public Staff GetStaff(int staffId)
         {
             SqlCommand command = Connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
@@ -83,13 +82,13 @@ namespace StaffManagementApp.Database
                 Staff staff = null;
                 while (reader.Read())
                 {
-                    staff = GetStaff(reader);
+                    staff = CreateStaffObject(reader);
                 }
                 return staff;
             }
             catch (SqlException e)
             {
-                return null;
+                throw;
             }
             finally
             {
@@ -99,7 +98,7 @@ namespace StaffManagementApp.Database
 
 
 
-        public void DatabaseUpdateStaff(Staff staff)
+        public void UpdateStaff(Staff staff)
         {
             SqlCommand command = Connection.CreateCommand();
             command = AddParameters(staff, command);
@@ -113,7 +112,7 @@ namespace StaffManagementApp.Database
             }
             catch (SqlException e)
             {
-                return;
+                throw;
             }
             finally
             {
@@ -121,7 +120,7 @@ namespace StaffManagementApp.Database
             }
         }
 
-        public List<Staff> DatabaseViewAll()
+        public List<Staff> ViewAll()
         {
             List<Staff> staffs = new List<Staff>();
             try
@@ -133,7 +132,7 @@ namespace StaffManagementApp.Database
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    Staff staff = GetStaff(reader);
+                    Staff staff = CreateStaffObject(reader);
                     if (staff != null)
                     {
                         staffs.Add(staff);
@@ -143,7 +142,7 @@ namespace StaffManagementApp.Database
             }
             catch (SqlException e)
             {
-                return null;
+                throw;
             }
             finally
             {
@@ -151,6 +150,50 @@ namespace StaffManagementApp.Database
             }
         }
 
+        public void AddBulk(List<Staff> staffs)
+        {
+            DataTable tbl = new DataTable();
+            tbl.Columns.Add("StaffName", typeof(string));
+            tbl.Columns.Add("StaffAge", typeof(int));
+            tbl.Columns.Add("StaffType", typeof(string));
+            tbl.Columns.Add("StaffDepartment", typeof(string));
+            foreach (Staff staff in staffs)
+            {
+                switch (staff.StaffType)
+                {
+                    case nameof(Teacher):
+                        tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Teacher)staff).Subject);
+                        break;
+
+                    case nameof(Administrator):
+                        tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Administrator)staff).AdministratorDepartment);
+
+                        break;
+
+                    case nameof(Support):
+                        tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Support)staff).SupportDepartment);
+                        break;
+                }
+            }
+            SqlCommand command = Connection.CreateCommand();
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = "procInsertStaffs";
+            command.Parameters.AddWithValue("tableStaff", tbl);
+            Connection.Open();
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (SqlException e)
+            {
+                throw;
+            }
+            finally
+            {
+                Connection.Close();
+            }
+
+        }
 
         private static SqlCommand AddParameters(Staff staff, SqlCommand command)
         {
@@ -178,7 +221,7 @@ namespace StaffManagementApp.Database
         }
 
 
-        private static Staff GetStaff(SqlDataReader reader)
+        private static Staff CreateStaffObject(SqlDataReader reader)
         {
             Object[] values;
             values = new Object[reader.FieldCount];
@@ -211,50 +254,6 @@ namespace StaffManagementApp.Database
             return staff;
         }
 
-        public void DatabaseAddBulk()
-        {
-            DataTable tbl = new DataTable();
-            tbl.Columns.Add("StaffName", typeof(string));
-            tbl.Columns.Add("StaffAge", typeof(int));
-            tbl.Columns.Add("StaffType", typeof(string));
-            tbl.Columns.Add("StaffDepartment", typeof(string));
-            foreach (Staff staff in Program.staffs)
-            {
-                switch (staff.StaffType)
-                {
-                    case nameof(Teacher):
-                        tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Teacher)staff).Subject);
-                        break;
-
-                    case nameof(Administrator):
-                        tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Administrator)staff).AdministratorDepartment);
-
-                        break;
-
-                    case nameof(Support):
-                        tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Support)staff).SupportDepartment);
-                        break;
-                }
-            }
-            SqlCommand command = Connection.CreateCommand();
-            command.CommandType = CommandType.StoredProcedure;
-            command.CommandText = "procInsertStaffs";
-            command.Parameters.AddWithValue("tableStaff", tbl);
-            Connection.Open();
-            try
-            {
-                command.ExecuteNonQuery();
-            }
-            catch (SqlException e)
-            {
-                return;
-            }
-            finally
-            {
-                Connection.Close();
-            }
-
-        }
 
     }
 }

@@ -1,6 +1,7 @@
-﻿using StaffManagementApp.Database;
-using StaffManagementApp.Serialization;
-using StaffManagementApp.Staffs;
+﻿using StaffManagementLibrary.DbHandler;
+using StaffManagementLibrary.SerializationHandler;
+using StaffManagementLibrary.Staffs;
+using StaffManagementLibrary.Staffs.HelperClasses;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,11 +12,19 @@ namespace StaffManagementApp
     public class Program
     {
 
-        static DatabaseManagementSQL DbHelper = new DatabaseManagementSQL(ConfigurationManager.AppSettings["ConnectionStringSQLDb"]);
+        static string DatabaseClassName = ConfigurationManager.AppSettings["DatabaseClassName"];
+        static Type DatabaseType = Type.GetType(DatabaseClassName);
+        static IDatabase DbHelper = (IDatabase)Activator.CreateInstance(DatabaseType, ConfigurationManager.AppSettings["ConnectionStringSQLDb"]);
+
+        static string className = ConfigurationManager.AppSettings["SerializeClassName"];
+        static Type SeriliazationType = Type.GetType(className);
+        static ISerialiseStaff serialiseData = (ISerialiseStaff)Activator.CreateInstance(SeriliazationType);
 
         public static List<Staff> staffs = new List<Staff>();
 
         public static int StaffId { get; set; }
+        static StaffHelper StaffHelper = new StaffHelper();
+        
 
         private static void Main(string[] args)
         {
@@ -33,8 +42,7 @@ namespace StaffManagementApp
             {
                 Console.WriteLine("Select the type of staff\n1){0}\n2){1}\n3){2}\n4)Export Data\n5)Import Data\n6)QUIT", nameof(Teacher), nameof(Administrator), nameof(Support));
                 staffOptions = Convert.ToInt32(Console.ReadLine());
-                ISerialiseStaff serialiseData;
-                serialiseData = new SerializationJSONHelper();
+                
 
                 switch (staffOptions)
                 {
@@ -51,11 +59,30 @@ namespace StaffManagementApp
                         break;
 
                     case 4:
-                        DbHelper.DatabaseAddBulk();
+
+                        try
+                        {
+                            serialiseData.StaffSerialize(staffs);
+                            Console.WriteLine("Export Succesfull");
+                        }
+                        catch (Exception e)
+                        {
+
+                            Console.WriteLine(e.Message);
+                        }
                         break;
 
                     case 5:
-                        staffs = serialiseData.StaffDeSerialize();
+                        try
+                        {
+                            staffs = serialiseData.StaffDeSerialize();
+                            Console.WriteLine("Import Succesfull");
+                        }
+                        catch (Exception e)
+                        {
+
+                            Console.WriteLine(e.Message);
+                        }
                         break;
 
                     case 6:
@@ -76,21 +103,56 @@ namespace StaffManagementApp
                 switch (mainOptions)
                 {
                     case 1:
-                        StaffId++;
-                        Staff staff = StaffHelper.StaffAdd(staffType, DbHelper);
-                        staffs.Add(staff);
+                        try
+                        {
+                            Staff staff=null;
+                            staff = StaffHelper.StaffAdd(staff, DbHelper, staffType);
+                            staff.ViewStaff();
+                            staffs.Add(staff);
+
+                        }
+                        catch (Exception e)
+                        {
+
+                            Console.WriteLine(e);
+                        }
                         break;
 
                     case 2:
-                        StaffHelper.DeleteStaff(staffType, DbHelper);
+                        try
+                        {
+                            Staff staffDelete = StaffHelper.GetStaff(DbHelper);
+                            StaffHelper.DeleteStaff(staffDelete, DbHelper, staffType);
+                        }
+                        catch (Exception e)
+                        {
+
+                            Console.WriteLine(e.Message);
+                        }
                         break;
 
                     case 3:
-                        StaffHelper.StaffUpdate(staffType, DbHelper);
+                        try
+                        {
+                            Staff staffUpdate = StaffHelper.GetStaff(DbHelper);
+                            staffUpdate.UpdateStaff();
+                            StaffHelper.StaffUpdate(staffUpdate, DbHelper);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                         break;
 
                     case 4:
-                        StaffHelper.StaffView(staffType, DbHelper);
+                        try
+                        {
+                            StaffHelper.StaffView(staffType, DbHelper);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                         break;
 
                     case 5:
