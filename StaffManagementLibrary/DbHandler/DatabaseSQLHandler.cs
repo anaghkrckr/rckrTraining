@@ -34,7 +34,7 @@ namespace StaffManagementLibrary.DbHandler
                 Connection.Open();
                 command = AddParameters(staff, command);
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "procAddStaff";
+                command.CommandText = "proc_AddStaff";
                 int staffId = (int)command.ExecuteScalar();
                 return staffId;
             }
@@ -54,7 +54,7 @@ namespace StaffManagementLibrary.DbHandler
             {
                 SqlCommand command = Connection.CreateCommand();
                 Connection.Open();
-                command.CommandText = @"procDeleteStaff";
+                command.CommandText = @"proc_DeleteStaff";
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.Add("@Id", SqlDbType.Int).Value = staffId;
                 command.ExecuteNonQuery();
@@ -73,7 +73,7 @@ namespace StaffManagementLibrary.DbHandler
         {
             SqlCommand command = Connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
-            command.CommandText = "procGetStaff";
+            command.CommandText = "proc_GetStaff";
             command.Parameters.Add("@Id", SqlDbType.Int).Value = staffId;
             Connection.Open();
             try
@@ -104,7 +104,7 @@ namespace StaffManagementLibrary.DbHandler
             command = AddParameters(staff, command);
             command.Parameters.Add("@Id", SqlDbType.Int).Value = staff.StaffId;
             command.CommandType = CommandType.StoredProcedure;
-            command.CommandText = "procUpdateStaff";
+            command.CommandText = "proc_UpdateStaff";
             Connection.Open();
             try
             {
@@ -127,7 +127,7 @@ namespace StaffManagementLibrary.DbHandler
             {
                 SqlCommand command = Connection.CreateCommand();
                 command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "procGetAll";
+                command.CommandText = "proc_GetAll";
                 Connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
@@ -177,7 +177,7 @@ namespace StaffManagementLibrary.DbHandler
             }
             SqlCommand command = Connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
-            command.CommandText = "procInsertStaffs";
+            command.CommandText = "proc_InsertStaffs";
             command.Parameters.AddWithValue("tableStaff", tbl);
             Connection.Open();
             try
