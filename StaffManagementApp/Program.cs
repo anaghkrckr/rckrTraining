@@ -15,8 +15,8 @@ namespace StaffManagementApp
         static string DatabaseClassName = ConfigurationManager.AppSettings["DatabaseClassName"];
         static Type DatabaseType = Type.GetType(DatabaseClassName);
         static IDatabase DbHelper = (IDatabase)Activator.CreateInstance(DatabaseType, ConfigurationManager.AppSettings["ConnectionStringSQLDb"]);
-
         static string className = ConfigurationManager.AppSettings["SerializeClassName"];
+
         static Type SeriliazationType = Type.GetType(className);
         static ISerialiseStaff serialiseData = (ISerialiseStaff)Activator.CreateInstance(SeriliazationType);
 
