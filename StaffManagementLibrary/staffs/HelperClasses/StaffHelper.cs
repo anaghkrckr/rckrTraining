@@ -34,7 +34,7 @@ namespace StaffManagementLibrary.Staffs.HelperClasses
                     break;
 
                 case nameof(Support):
-                    staff = new Support();
+                    staff = (Support)staff;
                     if (staff?.StaffName == null)
                     {
                         staff = new Support();
@@ -117,6 +117,8 @@ namespace StaffManagementLibrary.Staffs.HelperClasses
             Staff staff = dbHelper.GetStaff(StaffId);
             return staff;
         }
+
+        
 
 
     }

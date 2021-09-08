@@ -17,6 +17,7 @@ namespace StaffManagementLibrary.Staffs
     public class Staff
     {
 
+
         private string staffName;
         private int staffAge;
 
@@ -42,7 +43,7 @@ namespace StaffManagementLibrary.Staffs
                 }
                 else if (value.Length > 3)
                 {
-                    staffName = value;
+                    staffName = (value).First().ToString().ToUpper() + (value).Substring(1);
                 }
             }
         }

@@ -5,6 +5,7 @@ namespace StaffManagementAppAPI.Services
 {
     public class StaffServices
     {
-        public static List<Staff> staffs = new List<Staff>();
+        
+        public static List<Staff> Staffs = new List<Staff>();
     }
 }

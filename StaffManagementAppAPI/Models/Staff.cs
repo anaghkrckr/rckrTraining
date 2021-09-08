@@ -4,6 +4,11 @@ namespace StaffManagementAppAPI.Models
 {
     public class Staff
     {
+        public enum staffTypes { Teacher, Administrator, Support };
+
+        [JsonIgnore]
+        public staffTypes StaffTypes { get; }
+
         public int StaffId { get; set; }
         public string StaffName { get; set; }
         public int StaffAge { get; set; }
