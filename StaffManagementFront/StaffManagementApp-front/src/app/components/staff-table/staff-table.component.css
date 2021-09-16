@@ -1,0 +1,13 @@
+.staffTable {
+    padding: 50px;
+}
+
+.tableHead:hover {
+    cursor: pointer;
+    background-color: antiquewhite;
+    border-radius: 10px;
+}
+
+.tableRows {
+    cursor: pointer;
+}
