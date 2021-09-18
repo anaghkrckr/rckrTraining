@@ -8,8 +8,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent extends StaffBase {
+  onSearch(keyword: string): void {
+  }
   title = 'Staff Management App';
   value = "";
+  confirmation: boolean = false;
+  function!: Function;
+
+
+  eventConfirmed(value: boolean) {
+    this.confirmation = false
+    if (value == true) {
+      this.function()
+    }
+  }
 
   onEnter() {
     this.title = this.value;
@@ -19,7 +31,9 @@ export class AppComponent extends StaffBase {
   }
 
   deleteStaff() {
-    super.deleteStaff();
+    this.function = () => super.deleteStaff();
+    this.confirmation = true
   }
+
 
 }

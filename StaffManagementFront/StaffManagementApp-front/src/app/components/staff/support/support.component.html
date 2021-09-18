@@ -3,12 +3,12 @@
         <thead>
             <tr>
                 <th class="tableHead" (click)="sortTable(item.key)" scope="col" *ngFor="let item of tableHead |keyvalue: preserveTableHeadOrder">
-                    <i class='bi' [class.bi-caret-down-fill]="sortOrder[item.key]" [class.bi-caret-up-fill]="!sortOrder[item.key]"></i> {{item.value}}
+                    <i class='bi' [class.bi-caret-down-fill]="sorting.sortOrder[item.key]" [class.bi-caret-up-fill]="!sorting.sortOrder[item.key]"></i> {{item.value}}
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr (click)="updateStaff(support)" class="tableRows" *ngFor="let support of supporters">
+            <tr (click)="updateStaff(support)" class="tableRows" *ngFor="let support of supporters |staffListFilter:searchKeyword |slice:pageStart:pageEnd |staffListSort: sorting.currentSortKey: sorting.sortOrder[sorting.currentSortKey]">
                 <td>{{support.staffId}}</td>
                 <td>{{support.staffName}}</td>
                 <td>{{support.staffAge}}</td>
@@ -18,4 +18,11 @@
             </tr>
         </tbody>
     </table>
+    <app-paginate [totalItems]="( supporters|staffListFilter:searchKeyword|staffListSort: sorting.currentSortKey: sorting.sortOrder[sorting.currentSortKey] ).length" (activePage)="changePage($event)"></app-paginate>
+
 </div>
+
+<ng-container *ngIf="confirmation==true">
+    <app-confirmationpopup (confirmed)="eventConfirmed($event)">
+    </app-confirmationpopup>
+</ng-container>

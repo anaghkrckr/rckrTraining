@@ -3,7 +3,6 @@ import { Component, Input, OnInit, Output, SimpleChange } from '@angular/core';
 import { Administrator } from 'src/app/model/administrator';
 import { Staff } from 'src/app/model/staff';
 import { StaffServices } from 'src/app/services/staff.service';
-import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-administrator',
@@ -12,10 +11,23 @@ import { EventEmitter } from '@angular/core';
 })
 export class AdministratorComponent extends StaffBase implements OnInit {
 
+
+
+
   administrators!: Administrator[];
+  pageStart: number = 0
+  pageEnd: number = 5
+  pageData = { page: 1 };
+
+  searchKeyword!: string;
+  function!: Function
+  confirmation: boolean = false;
+
   constructor(private services: StaffServices) {
     super(services)
   }
+
+  sort = false
 
   ngOnInit(): void {
     this.services.staffTypes.selected = "Administrator"
@@ -28,6 +40,22 @@ export class AdministratorComponent extends StaffBase implements OnInit {
     })
   }
 
+  changePage(pageData: any) {
+    this.pageStart = (pageData.page - 1) * pageData.itemsPerPage
+    this.pageEnd = pageData.page * pageData.itemsPerPage
+  }
+
+  onSearch(searchKeyword: string): void {
+    this.searchKeyword = searchKeyword;
+  }
+
+  eventConfirmed(value: any) {
+    this.confirmation = false;
+    if (value) {
+      this.function()
+    }
+  }
+
 
   tableHead = {
     staffId: "Id",
@@ -35,19 +63,14 @@ export class AdministratorComponent extends StaffBase implements OnInit {
     staffAge: "Age",
     administratorDepartment: "Administrator Department"
   }
-  ngOnChanges(changes: SimpleChange) {
-    if (this.administrators != undefined) {
-      this.administrators.sort((a: any, b: any) => {
-        return this.sortOrder[this.currentSortKey] ? ((b[this.currentSortKey] > a[this.currentSortKey]) ? 1 : ((a[this.currentSortKey] > b[this.currentSortKey]) ? -1 : 0)) : ((a[this.currentSortKey] > b[this.currentSortKey]) ? 1 : ((b[this.currentSortKey] > a[this.currentSortKey]) ? -1 : 0));
-      });
-    }
+
+  sorting: any = {
+    currentSortKey: "staffId",
+    sortOrder: {}
   }
 
-  currentSortKey: string = "Id";
 
-  sortOrder: any = { Id: 0, Name: 0, Age: 0, Type: 0 }
-
-  sortIcons = {
+  sortIcons: any = {
     sortUp: "<i class='bi bi-caret-down-fill'></i>",
     sortDown: "<i class='bi bi-caret-up-fill'></i>"
   }
@@ -69,18 +92,13 @@ export class AdministratorComponent extends StaffBase implements OnInit {
 
   deleteStaff(staff: Administrator[]) {
     event?.stopImmediatePropagation()
-    super.deleteStaff(staff)
+    this.confirmation = true
+    this.function = () => super.deleteStaff(staff)
   }
 
   sortTable(key: any) {
-    this.currentSortKey = key;
-    this.sortOrder[key] = !this.sortOrder[key];
-    this.administrators.sort((a: any, b: any) => {
-      return this.sortOrder[key] ? ((b[key] > a[key]) ? 1 : ((a[key] > b[key]) ? -1 : 0)) : ((a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0));
-    });
-
+    this.sorting.currentSortKey = key;
+    this.sorting.sortOrder[key] = !this.sorting.sortOrder[key];
   }
-
-
 
 }

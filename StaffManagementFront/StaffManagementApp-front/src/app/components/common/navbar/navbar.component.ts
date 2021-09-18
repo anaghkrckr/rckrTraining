@@ -1,3 +1,4 @@
+import { StaffServices } from 'src/app/services/staff.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  keyword!: string
+
+  constructor(private staffServices: StaffServices) { }
 
   ngOnInit(): void {
   }
 
+  search(keyword: any) {
+
+    this.staffServices.onKeyUpSerch(keyword.target.value)
+  }
 }

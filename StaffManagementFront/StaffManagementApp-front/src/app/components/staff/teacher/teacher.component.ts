@@ -10,7 +10,35 @@ import { StaffBase } from '../../staffbase/staff-base';
   styleUrls: ['./teacher.component.css']
 })
 export class TeacherComponent extends StaffBase implements OnInit {
+
   teachers!: Teacher[];
+  pageStart: number = 0
+  pageEnd: number = 5
+  pageData = { page: 1 };
+  searchKeyword!: string;
+  function!: Function
+  confirmation: boolean = false;
+
+
+  tableHead = {
+    staffId: "Id",
+    staffName: "Name",
+    staffAge: "Age",
+    subject: "Subject"
+  }
+
+
+  sorting: any = {
+    currentSortKey: "staffId",
+    sortOrder: {}
+  }
+
+
+  sortIcons = {
+    sortUp: "<i class='bi bi-caret-down-fill'></i>",
+    sortDown: "<i class='bi bi-caret-up-fill'></i>"
+  }
+
 
   constructor(private services: StaffServices) {
     super(services)
@@ -29,33 +57,20 @@ export class TeacherComponent extends StaffBase implements OnInit {
     })
   }
 
-
-
-  tableHead = {
-    staffId: "Id",
-    staffName: "Name",
-    staffAge: "Age",
-    subject: "Subject"
+  changePage(pageData: any) {
+    this.pageStart = (pageData.page - 1) * pageData.itemsPerPage
+    this.pageEnd = pageData.page * pageData.itemsPerPage
   }
 
-
-
-  ngOnChanges(changes: SimpleChange) {
-    if (this.teachers != undefined) {
-      this.teachers.sort((a: any, b: any) => {
-        return this.sortOrder[this.currentSortKey] ? ((b[this.currentSortKey] > a[this.currentSortKey]) ? 1 : ((a[this.currentSortKey] > b[this.currentSortKey]) ? -1 : 0)) : ((a[this.currentSortKey] > b[this.currentSortKey]) ? 1 : ((b[this.currentSortKey] > a[this.currentSortKey]) ? -1 : 0));
-      });
+  eventConfirmed(value: any) {
+    this.confirmation = false;
+    if (value) {
+      this.function()
     }
   }
 
-  currentSortKey: string = "Id";
-
-
-  sortOrder: any = { Id: 0, Name: 0, Age: 0, Type: 0 }
-
-  sortIcons = {
-    sortUp: "<i class='bi bi-caret-down-fill'></i>",
-    sortDown: "<i class='bi bi-caret-up-fill'></i>"
+  onSearch(keyword: string): void {
+    this.searchKeyword = keyword;
   }
 
   preserveTableHeadOrder() {
@@ -74,15 +89,13 @@ export class TeacherComponent extends StaffBase implements OnInit {
 
   deleteStaff(staff: Teacher[]) {
     event?.stopImmediatePropagation()
-    super.deleteStaff(staff)
+    this.confirmation = true
+    this.function = () => super.deleteStaff(staff)
   }
 
   sortTable(key: any) {
-    this.currentSortKey = key;
-    this.sortOrder[key] = !this.sortOrder[key];
-    this.teachers.sort((a: any, b: any) => {
-      return this.sortOrder[key] ? ((b[key] > a[key]) ? 1 : ((a[key] > b[key]) ? -1 : 0)) : ((a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0));
-    });
+    this.sorting.currentSortKey = key;
+    this.sorting.sortOrder[key] = !this.sorting.sortOrder[key];
   }
 
 

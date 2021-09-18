@@ -24,6 +24,13 @@ export class StaffServices {
   private _successEvent: Subject<Staff[]> = new Subject();
   public $successEvent: Observable<Staff[]> = this._successEvent.asObservable();
 
+  private _serchEvent: Subject<string> = new Subject();
+  public $serchEvent: Observable<string> = this._serchEvent.asObservable();
+
+  onKeyUpSerch(keyword: string) {
+    this._serchEvent.next(keyword);
+  }
+
   onDeleteClick(staff: Staff[]) {
     this._staffdeleteClickEvent.next(staff)
   }
@@ -32,9 +39,8 @@ export class StaffServices {
     this._popupEvent.next(staff);
   }
 
-  onSubmitClick(staff: any) {
-    console.log("clicked")
-    this._formSubmitEvent.next(staff)
+  onSubmitClick(func: Function) {
+    this._formSubmitEvent.next(func)
   }
 
   onSuccessEvent(staff: any[]) {
@@ -64,21 +70,24 @@ export class StaffServices {
   }
 
 
+
   deleteStaffHelper(staff?: any[]) {
     if (staff != null) {
       this.staffDeleteList = staff;
     }
 
-    console.log("sdsf:", this.staffDeleteList)
     if (this.staffDeleteList.length == 0) {
       console.log("pls add staffs")
       return;
     }
 
     this.deleteStaff(this.staffDeleteList).subscribe(resp => {
-      console.log(resp)
-      this.getStaff(this.staffTypes.selected).subscribe(response => {
-        this.staffDeleteList = []
+      this.staffDeleteList = []
+      if (this.staffTypes.selected == "All") {
+        this.getStaffs().subscribe(staffs => {
+          this.onSuccessEvent(staffs);
+        })
+      } else {
         this.getStaff(this.staffTypes.selected).subscribe(response => {
           switch (this.staffTypes.selected) {
             case "Teacher":
@@ -92,8 +101,38 @@ export class StaffServices {
               break;
           }
         })
-      })
+      }
     })
+  }
+
+  addUpdateStaffHelper(staff: Staff) {
+    console.log("funcrnning")
+    console.log(staff)
+    if (staff.staffId > 0) {
+      console.log("updating")
+
+      this.updateStaff(staff).subscribe(Response => {
+        this.getStaff(this.staffTypes.selected).subscribe(resp => {
+          this.onSuccessEvent(resp)
+        })
+      })
+    } else {
+      console.log("adding")
+      this.addStaff(staff).subscribe(Response => {
+        if (this.staffTypes.selected == "All") {
+          this.getStaffs().subscribe(staffs => {
+            this.onSuccessEvent(staffs)
+          })
+        } else {
+
+          this.getStaff(this.staffTypes.selected).subscribe(resp => {
+            this.onSuccessEvent(resp)
+          })
+        }
+      })
+
+    }
+
   }
 
 
@@ -127,5 +166,6 @@ export class StaffServices {
       { headers }
     )
   }
+
 
 }

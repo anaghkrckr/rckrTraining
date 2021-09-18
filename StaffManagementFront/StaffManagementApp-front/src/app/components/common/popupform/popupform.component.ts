@@ -11,6 +11,8 @@ export class PopupformComponent implements OnInit {
 
   constructor(private staffServices: StaffServices) { }
 
+  formType: string = "null"
+
   staff: any = {
     staffId: "",
     staffName: "",
@@ -23,11 +25,20 @@ export class PopupformComponent implements OnInit {
   staffTypes!: any;
 
   openForm() {
+    console.log((this.staffTypes.staffs))
     this.hide = "block"
   }
 
   closeForm() {
     this.hide = "none";
+    this.staff = {
+      staffId: "",
+      staffName: "",
+      staffAge: "",
+      staffType: "",
+      departmentName: "",
+      department: ""
+    }
   }
   changeValue(staff: any) {
     if (staff != undefined) {
@@ -57,29 +68,27 @@ export class PopupformComponent implements OnInit {
       [this.staffTypes.staffs[staff.staffType].objName]: staff.department,
 
     }
-    if (updatedStaff.staffId > 0) {
-      this.staffServices.updateStaff(updatedStaff).subscribe(Response => {
-        this.staffServices.getStaff(this.staffServices.staffTypes.selected).subscribe(resp => {
-          this.staffServices.onSuccessEvent(resp)
-        })
-      })
-    } else {
+    console.log(updatedStaff)
 
-      this.staffServices.addStaff(updatedStaff).subscribe(Response => {
-        this.staffServices.getStaff(this.staffServices.staffTypes.selected).subscribe(resp => {
-          this.staffServices.onSuccessEvent(resp)
-        })
-      })
-
-    }
-
+    this.staffServices.addUpdateStaffHelper(updatedStaff)
+    this.closeForm()
   }
+
 
   ngOnInit(): void {
     this.staffTypes = this.staffServices.staffTypes;
+    delete this.staffTypes.staffs.All
+    console.log(this.staffTypes.staffs)
     this.staffServices.$popupEvent.subscribe(response => {
-      this.changeValue(response)
-      this.staffTypes.selected = response.staffType;
+      if (response.staffId < 0) {
+        this.formType = "Add Form"
+        this.staff.staffType = "All";
+        this.staff.staffId = response.staffId
+      }
+      else {
+        this.formType = "Update Form"
+        this.changeValue(response)
+      }
       this.openForm();
     })
   }

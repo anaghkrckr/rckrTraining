@@ -6,10 +6,11 @@ import { Teacher } from "src/app/model/teacher";
 import { StaffServices } from "src/app/services/staff.service";
 
 @Directive()
-export class StaffBase {
+export abstract class StaffBase {
     constructor(private staffServices: StaffServices) {
         console.log(this.staffServices.staffTypes)
         this.staffTypes = this.staffServices.staffTypes;
+        this.eventListener();
     }
 
     staffs: any;
@@ -20,6 +21,15 @@ export class StaffBase {
     staffTypes!: any;
 
     staffDeleteList: Object[] = []
+
+    abstract onSearch(keyword: string): void;
+
+    eventListener() {
+        this.staffServices.$serchEvent.subscribe(resp => {
+            this.onSearch(resp)
+        })
+    }
+
 
     addStaff() {
         console.log("add")
@@ -48,6 +58,7 @@ export class StaffBase {
     }
 
     deleteStaff(staff?: any[]) {
+        console.log("executed")
         this.staffServices.deleteStaffHelper(staff)
     }
 

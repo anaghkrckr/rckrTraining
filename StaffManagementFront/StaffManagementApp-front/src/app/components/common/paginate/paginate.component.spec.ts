@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StaffTableComponent } from './staff-table.component';
+import { PaginateComponent } from './paginate.component';
 
-describe('StaffTableComponent', () => {
-  let component: StaffTableComponent;
-  let fixture: ComponentFixture<StaffTableComponent>;
+describe('PaginateComponent', () => {
+  let component: PaginateComponent;
+  let fixture: ComponentFixture<PaginateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StaffTableComponent ]
+      declarations: [ PaginateComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StaffTableComponent);
+    fixture = TestBed.createComponent(PaginateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

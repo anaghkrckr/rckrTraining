@@ -1,4 +1,8 @@
 <app-popupform></app-popupform>
+<ng-container *ngIf="confirmation">
+
+    <app-confirmationpopup (confirmed)="eventConfirmed($event)"></app-confirmationpopup>
+</ng-container>
 <app-navbar></app-navbar>
 <div class="float-end p-3 ">
     <button class="btn btn-primary" (click)="addStaff()">ADD STAFF</button><br>

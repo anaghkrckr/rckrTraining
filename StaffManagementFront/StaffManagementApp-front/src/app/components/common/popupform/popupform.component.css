@@ -7,20 +7,21 @@
 
 .popupform {
     width: 700px;
-    height: 700px;
-    background-color: red;
+    height: 450px;
+    background-color: #f1c40f;
     border-radius: 15px;
     opacity: 100%;
     position: fixed;
     z-index: 1;
     text-align: center;
-    padding: 5px;
+    padding: 20px;
     border-radius: 100px;
     overflow: hidden;
     top: 0;
     left: 0;
     margin-top: 5%;
     margin-left: 30%;
+    box-shadow: 0 10px 20px -1px rgb(66, 61, 61);
 }
 
 .popupformBackground {
@@ -30,4 +31,8 @@
     height: 100%;
     z-index: 1;
     opacity: 0.5;
+}
+
+.formHeading {
+    padding: 20px;
 }
