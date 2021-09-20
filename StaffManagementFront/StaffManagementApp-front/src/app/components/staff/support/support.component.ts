@@ -1,5 +1,5 @@
 import { StaffBase } from './../../staffbase/staff-base';
-import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, SimpleChange, ChangeDetectorRef } from '@angular/core';
 import { Staff } from 'src/app/model/staff';
 import { Support } from 'src/app/model/support';
 import { StaffServices } from 'src/app/services/staff.service';
@@ -16,7 +16,7 @@ export class SupportComponent extends StaffBase implements OnInit {
   pageEnd!: number
   pageData = { page: 1 };
   searchKeyword!: string;
-  function!: Function
+  staffToDelete!: Support[];
   confirmation: boolean = false;
 
   tableHead = {
@@ -30,8 +30,7 @@ export class SupportComponent extends StaffBase implements OnInit {
 
   sorting: any = {
     currentSortKey: "staffId",
-
-    sortOrder: {}
+    sortOrder: false
   }
 
   sortIcons = {
@@ -39,14 +38,14 @@ export class SupportComponent extends StaffBase implements OnInit {
     sortDown: "<i class='bi bi-caret-up-fill'></i>"
   }
 
-  constructor(private services: StaffServices) {
+  constructor(private services: StaffServices, private cdref: ChangeDetectorRef) {
     super(services)
   }
 
   eventConfirmed(value: any) {
     this.confirmation = false;
     if (value) {
-      this.function()
+      super.deleteStaff(this.staffToDelete as any)
     }
   }
 
@@ -59,8 +58,14 @@ export class SupportComponent extends StaffBase implements OnInit {
     })
     this.services.$successEvent.subscribe(resp => {
       this.supporters = resp as Support[];
+      this.sortList(this.sorting.currentSortKey)
+
     })
 
+  }
+
+  ngAfterContentChecked() {
+    this.cdref.detectChanges()
   }
 
   onSearch(searchKeyword: string): void {
@@ -89,13 +94,25 @@ export class SupportComponent extends StaffBase implements OnInit {
 
   deleteStaff(staff: Support[]) {
     event?.stopImmediatePropagation()
+    this.staffToDelete = staff;
     this.confirmation = true
-    this.function = () => super.deleteStaff(staff)
   }
 
+  sortList(key: any) {
+    let sortStaff = [...this.supporters]
+    sortStaff?.sort((a: any, b: any) => {
+      return this.sorting.sortOrder ? ((b[key] > a[key]) ? 1 : ((a[key] > b[key]) ? -1 : 0)) : ((a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0));
+    })
+    this.supporters = [...sortStaff];
+    console.log(this.staffs)
+  }
+
+
   sortTable(key: any) {
+    console.log((key))
     this.sorting.currentSortKey = key;
-    this.sorting.sortOrder[key] = !this.sorting.sortOrder[key];
+    this.sorting.sortOrder = !this.sorting.sortOrder;
+    this.sortList(key)
   }
 
 

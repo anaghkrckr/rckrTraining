@@ -11,3 +11,7 @@
 .tableRows {
     cursor: pointer;
 }
+
+.buttonColumn {
+    width: 20px
+}

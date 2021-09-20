@@ -117,8 +117,17 @@ namespace StaffManagementAppAPI.Controllers
             {
                 staffList.Add(ConvertToStaffManagementStaff(staff));
             }
-
+            try
+            {
             DbHelper.DeleteBulk(staffList);
+
+            }
+            catch (Exception e)
+            {
+
+                return NotFound(e.Message);
+            }
+
             return Ok(new
             {
                 status = $"all deleted"

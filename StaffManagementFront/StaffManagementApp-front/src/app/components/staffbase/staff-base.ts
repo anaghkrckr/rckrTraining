@@ -8,7 +8,6 @@ import { StaffServices } from "src/app/services/staff.service";
 @Directive()
 export abstract class StaffBase {
     constructor(private staffServices: StaffServices) {
-        console.log(this.staffServices.staffTypes)
         this.staffTypes = this.staffServices.staffTypes;
         this.eventListener();
     }
@@ -32,7 +31,6 @@ export abstract class StaffBase {
 
 
     addStaff() {
-        console.log("add")
         let staff: Staff = {
             staffId: -1,
             staffName: "",
@@ -54,11 +52,9 @@ export abstract class StaffBase {
 
     addToDeleteList(staff: any) {
         this.staffDeleteList.push(staff)
-        console.log(this.staffDeleteList);
     }
 
     deleteStaff(staff?: any[]) {
-        console.log("executed")
         this.staffServices.deleteStaffHelper(staff)
     }
 

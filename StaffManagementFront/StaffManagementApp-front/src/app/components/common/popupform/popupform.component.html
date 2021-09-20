@@ -10,20 +10,42 @@
             <div class="form" id="myform">
                 <h1 id="staffFormType"></h1>
                 <form class="formAdd">
+
                     <input type="hidden" [(ngModel)]="staff.staffid" required name="staffId" id="staffId">
-                    <div class="form-group row p-2  ">
+                    <!-- 
+                    <div class="col-md-4">
+                        <label for="validationCustomUsername" class="form-label">Username</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                            <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+
+                        </div>
+                    </div> -->
+                    <div class="form-group row p-3  ">
                         <label for="staffName" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
-                            <input [(ngModel)]="staff.staffName" required type="text" name="staffName" class="form-control w-75" id="staffName">
+                            <input (keyup)="validation($event,'staffName')" [(ngModel)]="staff.staffName" required type="text" name="staffName" class="form-control w-75" id="staffName">
+                            <ng-container *ngIf="validationErrors.fieldErrors.staffName.error && (validationErrors.fieldErrors.staffName.errorMessage.length>0)">
+                                <div class="bg-danger w-75 error">
+                                    {{validationErrors.fieldErrors.staffName.errorMessage}}
+                                </div>
+                            </ng-container>
+
                         </div>
+
                     </div>
-                    <div class="form-group row p-2">
+                    <div class="form-group row p-3 ">
                         <label for="staffAge" class="col-sm-2 col-form-label">Age</label>
                         <div class="col-sm-10">
-                            <input [(ngModel)]="staff.staffAge" required type="number" min="20" max="80" class="form-control w-75" name="staffAge" id="staffAge">
+                            <input (keyup)="validation($event,'staffAge')" [(ngModel)]="staff.staffAge" required type="number" min="20" max="80" class="form-control w-75" name="staffAge" id="staffAge">
+                            <ng-container *ngIf="validationErrors.fieldErrors.staffAge.error && (validationErrors.fieldErrors.staffAge.errorMessage.length>0)">
+                                <div class="bg-danger w-75 error">
+                                    {{validationErrors.fieldErrors.staffAge.errorMessage}}
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
-                    <div class="form-group row p-2">
+                    <div class="form-group row p-3 ">
                         <label for="staffType" class="col-sm-2 col-form-label">Type</label>
                         <div class="col-sm-10">
                             <select (ngModelChange)="onStaffTypeChange($event)" [ngModel]="staff.staffType" required name="staffType" id="formStaffs" class="form-select w-75">
@@ -34,14 +56,19 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row p-2">
+                    <div class="form-group row p-3 ">
                         <label for="staffDepartment" class="col-sm-2 col-form-label" id="labelstaffDepartment">{{staff.departmentName|| "Department"}}</label>
                         <div class="col-sm-10">
-                            <input [(ngModel)]="staff.department" required type="text" class="form-control w-75" name="staffDepartment" id="staffDepartment">
+                            <input (keyup)="validation($event,'department')" [(ngModel)]="staff.department" required type="text" class="form-control w-75" name="staffDepartment" id="staffDepartment">
+                            <ng-container *ngIf="validationErrors.fieldErrors.department.error && (validationErrors.fieldErrors.department.errorMessage.length>0)">
+                                <div class="bg-danger w-75 error">
+                                    {{validationErrors.fieldErrors.department.errorMessage}}
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-success" (click)="onSubmit(staff)">Submit</button>
+                    <button type="submit" [ngClass]="{'disabled':validationErrors.error==1}" class="btn btn-success" (click)="onSubmit(staff)">Submit</button>
                     <button type="button" class="btn btn-danger" (click)="closeForm()">Close</button>
                 </form>
 

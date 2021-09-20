@@ -1,0 +1,10 @@
+.navbar {
+    margin-top: 10px;
+    border-radius: 30px;
+    position: fixed;
+    width: 100%;
+}
+
+.navBarHelper {
+    height: 90px;
+}

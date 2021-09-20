@@ -10,7 +10,7 @@ export class PaginateComponent implements OnInit {
 
   @Input() totalItems!: any;
   totalPages: number = 1
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 9;
   pages: number[] = Array.from(Array(this.totalPages), (x, i) => i + 1)
   @Output() activePage = new EventEmitter();
   currentPage: number = 1;
@@ -19,19 +19,17 @@ export class PaginateComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log("lenth:", this.totalItems)
     this.activePage.emit({ page: this.currentPage, itemsPerPage: this.itemsPerPage })
     this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage)
     this.pages = Array.from(Array(this.totalPages), (x, i) => i + 1)
   }
 
   ngOnChanges(changes: SimpleChange) {
-    console.log("lenth:", this.totalItems)
-    console.log(changes)
     this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage)
     this.pages = Array.from(Array(this.totalPages), (x, i) => i + 1)
-    if (this.currentPage > this.totalPages) {
-      this.activePage.emit({ page: this.currentPage - 1, itemsPerPage: this.itemsPerPage })
+    if (this.currentPage > this.totalPages && this.totalItems >= this.itemsPerPage) {
+      this.currentPage = this.currentPage - 1
+      this.activePage.emit({ page: this.currentPage, itemsPerPage: this.itemsPerPage })
     }
   }
 

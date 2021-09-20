@@ -1,6 +1,6 @@
 import { Staff } from 'src/app/model/staff';
 import { Teacher } from './../../../model/teacher';
-import { Component, Input, OnInit, Output, SimpleChange } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, Output, SimpleChange } from '@angular/core';
 import { StaffServices } from 'src/app/services/staff.service';
 import { StaffBase } from '../../staffbase/staff-base';
 
@@ -30,19 +30,21 @@ export class TeacherComponent extends StaffBase implements OnInit {
 
   sorting: any = {
     currentSortKey: "staffId",
-    sortOrder: {}
+    sortOrder: false
   }
-
 
   sortIcons = {
     sortUp: "<i class='bi bi-caret-down-fill'></i>",
     sortDown: "<i class='bi bi-caret-up-fill'></i>"
   }
+  staffToDelete!: Teacher[];
 
 
-  constructor(private services: StaffServices) {
+  constructor(private services: StaffServices, private cdref: ChangeDetectorRef) {
     super(services)
   }
+
+
 
 
   ngOnInit(): void {
@@ -54,7 +56,12 @@ export class TeacherComponent extends StaffBase implements OnInit {
 
     this.services.$successEvent.subscribe(resp => {
       this.teachers = resp as Teacher[];
+      this.sortList(this.sorting.currentSortKey)
     })
+  }
+
+  ngAfterContentChecked() {
+    this.cdref.detectChanges()
   }
 
   changePage(pageData: any) {
@@ -65,7 +72,7 @@ export class TeacherComponent extends StaffBase implements OnInit {
   eventConfirmed(value: any) {
     this.confirmation = false;
     if (value) {
-      this.function()
+      super.deleteStaff(this.staffToDelete as any)
     }
   }
 
@@ -89,13 +96,23 @@ export class TeacherComponent extends StaffBase implements OnInit {
 
   deleteStaff(staff: Teacher[]) {
     event?.stopImmediatePropagation()
+    this.staffToDelete = staff;
     this.confirmation = true
-    this.function = () => super.deleteStaff(staff)
   }
+
+  sortList(key: any) {
+    let sortStaff = [...this.teachers]
+    sortStaff?.sort((a: any, b: any) => {
+      return this.sorting.sortOrder ? ((b[key] > a[key]) ? 1 : ((a[key] > b[key]) ? -1 : 0)) : ((a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0));
+    })
+    this.teachers = [...sortStaff];
+  }
+
 
   sortTable(key: any) {
     this.sorting.currentSortKey = key;
-    this.sorting.sortOrder[key] = !this.sorting.sortOrder[key];
+    this.sorting.sortOrder = !this.sorting.sortOrder;
+    this.sortList(key)
   }
 
 

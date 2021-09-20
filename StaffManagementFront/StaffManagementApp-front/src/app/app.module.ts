@@ -1,3 +1,4 @@
+import { ReturnStaff } from './pipes/returnStaff.pipe';
 import { StaffListSortPipe } from './pipes/staffListSort.pipe';
 import { StaffListFilterPipe } from './pipes/stafflistfilter.pipe';
 import { StaffServices } from './services/staff.service';
@@ -15,7 +16,7 @@ import { AdministratorComponent } from './components/staff/administrator/adminis
 import { SupportComponent } from './components/staff/support/support.component';
 import { NavbarComponent } from './components/common/navbar/navbar.component';
 import { ConfirmationpopupComponent } from './components/common/confirmationpopup/confirmationpopup.component';
-import { PaginateComponent } from './components/pagination/paginate/paginate.component'
+import { PaginateComponent } from './components/common/paginate/paginate.component'
 
 @NgModule({
   declarations: [
@@ -27,19 +28,21 @@ import { PaginateComponent } from './components/pagination/paginate/paginate.com
     SupportComponent,
     NavbarComponent,
     ConfirmationpopupComponent,
+    PaginateComponent,
     StaffListFilterPipe,
     StaffListSortPipe,
-    PaginateComponent
+    ReturnStaff,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot([
-      { path: '', component: StaffComponent },
+      { path: '', redirectTo: '/home', pathMatch: "full" },
+      { path: 'home', component: StaffComponent },
       { path: 'teacher', component: TeacherComponent },
       { path: 'administrator', component: AdministratorComponent },
-      { path: 'support', component: SupportComponent }
+      { path: 'support', component: SupportComponent },
     ])
   ],
   providers: [

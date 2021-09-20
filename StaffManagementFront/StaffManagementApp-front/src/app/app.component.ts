@@ -10,6 +10,8 @@ import { Component } from '@angular/core';
 export class AppComponent extends StaffBase {
   onSearch(keyword: string): void {
   }
+
+
   title = 'Staff Management App';
   value = "";
   confirmation: boolean = false;

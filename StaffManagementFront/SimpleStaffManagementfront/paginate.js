@@ -1,6 +1,6 @@
 let page = {
     totalItems: 0,
-    itemsPerPage: 12,
+    itemsPerPage: 10,
     pages: 0,
 }
 

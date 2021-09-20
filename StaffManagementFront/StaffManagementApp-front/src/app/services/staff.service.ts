@@ -106,18 +106,20 @@ export class StaffServices {
   }
 
   addUpdateStaffHelper(staff: Staff) {
-    console.log("funcrnning")
-    console.log(staff)
     if (staff.staffId > 0) {
-      console.log("updating")
-
       this.updateStaff(staff).subscribe(Response => {
-        this.getStaff(this.staffTypes.selected).subscribe(resp => {
-          this.onSuccessEvent(resp)
-        })
+        if (this.staffTypes.selected == "All") {
+          this.getStaffs().subscribe(staffs => {
+            this.onSuccessEvent(staffs)
+          })
+        } else {
+
+          this.getStaff(this.staffTypes.selected).subscribe(resp => {
+            this.onSuccessEvent(resp)
+          })
+        }
       })
     } else {
-      console.log("adding")
       this.addStaff(staff).subscribe(Response => {
         if (this.staffTypes.selected == "All") {
           this.getStaffs().subscribe(staffs => {
