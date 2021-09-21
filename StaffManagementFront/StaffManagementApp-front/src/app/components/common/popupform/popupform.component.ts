@@ -16,24 +16,11 @@ export class PopupformComponent implements OnInit {
 
   formType: string = "null"
 
-  validationErrors: any = {
 
-    fieldErrors: {
-      staffName: {
-        error: 1,
-        errorMessage: ""
-      },
-      staffAge: {
-        error: 1,
-        errorMessage: ""
-      },
-      department: {
-        error: 1,
-        errorMessage: ""
-      }
-    },
-    error: 1
+  _validationDict: { [key: string]: string } = {
   }
+
+  validationErrors: boolean = true
 
   staff: any = {
     staffId: "",
@@ -60,7 +47,10 @@ export class PopupformComponent implements OnInit {
       departmentName: "",
       department: ""
     }
+    this._validationDict = {}
   }
+
+
   changeValue(staff: any) {
     if (staff != undefined) {
       this.staff = {
@@ -84,68 +74,74 @@ export class PopupformComponent implements OnInit {
     switch (feildType) {
       case "staffName":
         if (!isNaN(value)) {
-          this.validationErrors.fieldErrors[feildType].error = 1
-          this.validationErrors.fieldErrors[feildType].errorMessage = "Name should not be a number"
+
+          this._validationDict[feildType] = "Name should not be a number"
         }
         else if (value.length < 3) {
 
-          this.validationErrors.fieldErrors[feildType].error = 1
-          this.validationErrors.fieldErrors[feildType].errorMessage = "name length should be greater than 3"
+          this._validationDict[feildType] = "name length should be greater than 3"
         }
         else if (value.length > 30) {
 
-          this.validationErrors.fieldErrors[feildType].error = 1
-          this.validationErrors.fieldErrors[feildType].errorMessage = "name length should be less than 30"
+          this._validationDict[feildType] = "name length should be less than 30"
         }
         else {
 
-          this.validationErrors.fieldErrors[feildType].error = 0
-          this.validationErrors.fieldErrors[feildType].errorMessage = ""
+          this._validationDict[feildType] = ""
         }
+
         break;
       case "staffAge":
         if (value < 20) {
 
-          this.validationErrors.fieldErrors[feildType].error = 1
-          this.validationErrors.fieldErrors[feildType].errorMessage = "Age should be greater than 20"
+          this._validationDict[feildType] = "Age should be greater than 20"
         } else if (value > 80) {
 
-          this.validationErrors.fieldErrors[feildType].error = 1
-          this.validationErrors.fieldErrors[feildType].errorMessage = "Age should be less than 80"
+          this._validationDict[feildType] = "Age should be less than 80"
         }
         else {
 
-          this.validationErrors.fieldErrors[feildType].error = 0
-          this.validationErrors.fieldErrors[feildType].errorMessage = ""
+          this._validationDict[feildType] = ""
         }
 
         break;
       case "department":
         if (!isNaN(value)) {
-          this.validationErrors.fieldErrors[feildType].error = 1
-          this.validationErrors.fieldErrors[feildType].errorMessage = "Department name should not be a number"
+          this._validationDict[feildType] = "Department name should not be a number"
         }
         else if (value.length < 3) {
 
-          this.validationErrors.fieldErrors[feildType].error = 1
-          this.validationErrors.fieldErrors[feildType].errorMessage = "Department name length should be greater than 3"
+          this._validationDict[feildType] = "Department name length should be greater than 3"
         }
         else if (value.length > 30) {
 
-          this.validationErrors.fieldErrors[feildType].error = 1
-          this.validationErrors.fieldErrors[feildType].errorMessage = "Department name length should be less than 30"
+          this._validationDict[feildType] = "Department name length should be less than 30"
         }
         else {
 
-          this.validationErrors.fieldErrors[feildType].error = 0
-          this.validationErrors.fieldErrors[feildType].errorMessage = ""
+          this._validationDict[feildType] = ""
         }
 
         break;
 
     }
-    this.validationErrors.error = this.validationErrors.fieldErrors.staffName.error || this.validationErrors.fieldErrors.staffAge.error || this.validationErrors.fieldErrors.department.error
+
+    let validationerror: boolean = false
+    let size = 0
+    Object.keys(this._validationDict).forEach(val => {
+      size++
+      console.log(val, this._validationDict[val].length, (this._validationDict[val].length > 0))
+      validationerror = validationerror || (this._validationDict[val].length > 0)
+    })
+    if (this.formType == "Add Form") {
+
+      this.validationErrors = validationerror || size != 3
+    } else {
+      this.validationErrors = validationerror
+    }
   }
+
+
 
 
   onSubmit(staff: any) {

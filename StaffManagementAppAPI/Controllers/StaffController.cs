@@ -108,35 +108,6 @@ namespace StaffManagementAppAPI.Controllers
             });
 
         }
-        
-        [HttpDelete]
-        public ActionResult<List<Staff>> DeleteBulk(List<Models.Staff> staffs)
-        {
-            List<Staff> staffList = new List<Staff>();
-            foreach(Models.Staff staff in staffs)
-            {
-                staffList.Add(ConvertToStaffManagementStaff(staff));
-            }
-            try
-            {
-            DbHelper.DeleteBulk(staffList);
-
-            }
-            catch (Exception e)
-            {
-
-                return NotFound(e.Message);
-            }
-
-            return Ok(new
-            {
-                status = $"all deleted"
-            });
-           
-           
-
-        }
-
         [HttpPut("{staffType}/{staffId:int}")]
         public ActionResult<Staff> UpdateStaff(Models.Staff staff,string staffType,int staffId)
         {
@@ -164,6 +135,47 @@ namespace StaffManagementAppAPI.Controllers
                 });
             }
         }
+        
+        [HttpDelete]
+        public ActionResult<List<Staff>> DeleteBulk(List<Models.Staff> staffs)
+        {
+            List<Staff> staffList = new List<Staff>();
+            foreach(Models.Staff staff in staffs)
+            {
+                staffList.Add(ConvertToStaffManagementStaff(staff));
+            }
+            try
+            {
+            DbHelper.DeleteBulk(staffList);
+
+            }
+            catch (Exception e)
+            {
+
+                return NotFound(e.Message);
+            }
+
+            if (staffList.Count == 1)
+            {
+                return Ok(new
+                {
+                    status = $"Staff deleted"
+                });
+            }
+            else
+            {
+                return Ok(new
+                {
+                    status = $"all selected Staff deleted"
+                });
+            }
+
+            
+           
+           
+
+        }
+
 
 
         [HttpDelete("{staffType}/{staffId}")]

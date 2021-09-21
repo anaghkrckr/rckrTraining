@@ -9,6 +9,9 @@ import { Staff } from '../model/staff';
 
 
 export class StaffServices {
+
+  readonly BASE_URL: string = "http://staffapi.dev.grcdev.com/api/Staff"
+
   constructor(private http: HttpClient) { }
 
 
@@ -26,6 +29,13 @@ export class StaffServices {
 
   private _serchEvent: Subject<string> = new Subject();
   public $serchEvent: Observable<string> = this._serchEvent.asObservable();
+
+  private _notificationevent: Subject<string> = new Subject();
+  public $notificationevent: Observable<string> = this._notificationevent.asObservable();
+
+  onNotification(message: string) {
+    this._notificationevent.next(message);
+  }
 
   onKeyUpSerch(keyword: string) {
     this._serchEvent.next(keyword);
@@ -60,28 +70,18 @@ export class StaffServices {
 
   staffDeleteList: Object[] = []
 
-
-  getStaffs(): Observable<any> {
-    return this.http.get('https://localhost:44332/api/staff')
-  }
-
-  getStaff(staffType: string): Observable<any> {
-    return this.http.get('https://localhost:44332/api/staff/' + staffType)
-  }
-
-
-
   deleteStaffHelper(staff?: any[]) {
     if (staff != null) {
       this.staffDeleteList = staff;
     }
 
     if (this.staffDeleteList.length == 0) {
-      console.log("pls add staffs")
+      this.onNotification("No staff Selected to Delete")
       return;
     }
 
-    this.deleteStaff(this.staffDeleteList).subscribe(resp => {
+    this.deleteStaff(this.staffDeleteList).subscribe((resp: any) => {
+      this.onNotification(resp.status)
       this.staffDeleteList = []
       if (this.staffTypes.selected == "All") {
         this.getStaffs().subscribe(staffs => {
@@ -107,7 +107,8 @@ export class StaffServices {
 
   addUpdateStaffHelper(staff: Staff) {
     if (staff.staffId > 0) {
-      this.updateStaff(staff).subscribe(Response => {
+      this.updateStaff(staff).subscribe((response: any) => {
+        this.onNotification(response.status)
         if (this.staffTypes.selected == "All") {
           this.getStaffs().subscribe(staffs => {
             this.onSuccessEvent(staffs)
@@ -120,7 +121,8 @@ export class StaffServices {
         }
       })
     } else {
-      this.addStaff(staff).subscribe(Response => {
+      this.addStaff(staff).subscribe((Response: any) => {
+        this.onNotification(Response.status)
         if (this.staffTypes.selected == "All") {
           this.getStaffs().subscribe(staffs => {
             this.onSuccessEvent(staffs)
@@ -137,11 +139,18 @@ export class StaffServices {
 
   }
 
+  getStaffs(): Observable<any> {
+    return this.http.get(this.BASE_URL)
+  }
+
+  getStaff(staffType: string): Observable<any> {
+    return this.http.get(this.BASE_URL + "/" + staffType)
+  }
 
   deleteStaff(staffs: any[]) {
     const headers = { 'Content-Type': 'application/json' }
     const body = staffs;
-    const url = "https://localhost:44332/api/staff";
+    const url = this.BASE_URL;
     return this.http.delete(url,
       ({
         body: body,
@@ -152,7 +161,7 @@ export class StaffServices {
   updateStaff(staff: any) {
     const headers = { 'Content-Type': 'application/json' }
     const body = { ...staff }
-    const url = "https://localhost:44332/api/staff/" + staff.staffType + "/" + staff.staffId;
+    const url = this.BASE_URL + "/" + staff.staffType + "/" + staff.staffId;
     return this.http.put(url,
       body,
       { headers }
@@ -162,7 +171,7 @@ export class StaffServices {
   addStaff(staff: any) {
     const headers = { 'Content-Type': 'application/json' }
     const body = { ...staff }
-    const url = "https://localhost:44332/api/staff";
+    const url = this.BASE_URL;
     return this.http.post(url,
       body,
       { headers }

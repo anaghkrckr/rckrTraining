@@ -1,6 +1,5 @@
-import { StaffBase } from './components/staffbase/staff-base';
-import { Staff } from 'src/app/model/staff';
 import { Component } from '@angular/core';
+import { StaffBase } from './components/staffbase/staff-base';
 
 @Component({
   selector: 'app-root',

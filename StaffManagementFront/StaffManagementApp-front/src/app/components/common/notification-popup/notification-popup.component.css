@@ -1,0 +1,43 @@
+.notification-popup {
+    position: absolute;
+    width: 225px;
+    height: 50px;
+    z-index: 1;
+    background-color: #27ae60;
+    border-radius: 25px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    color: aliceblue;
+    bottom: 5%;
+    left: 42%;
+}
+
+.overlay:target .notification-popup {
+    animation: popup 3s;
+}
+
+@keyframes popup {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.4);
+    }
+    60% {
+        transform: scale(1.1);
+    }
+    70% {
+        transform: scale(1.2);
+    }
+    80% {
+        transform: scale(1);
+    }
+    90% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

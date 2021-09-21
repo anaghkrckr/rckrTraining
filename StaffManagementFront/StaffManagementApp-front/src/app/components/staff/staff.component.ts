@@ -51,6 +51,7 @@ export class StaffComponent extends StaffBase implements OnInit {
     this.services.staffTypes.selected = "All"
     this.services.getStaffs().subscribe(response => {
       this.staffs = response;
+      // this.services.onNotification("staff addded")
     })
 
     this.services.$successEvent.subscribe(resp => {
