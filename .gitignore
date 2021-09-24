@@ -19,3 +19,6 @@ StaffManagementAppAPI/publish/*
 StaffManagementAppAPI/properties/*
 StaffManagementLibrary/bin/*
 StaffManagementLibrary/obj/*
+StaffManagementFront/StaffManagementApp/*
+StaffManagementLibrary/DbHandler.zip
+StaffManagementFront/StaffManageMentFront-nonlazy/*

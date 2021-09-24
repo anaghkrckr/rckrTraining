@@ -1,0 +1,11 @@
+<ng-container *ngIf="totalPages!=1">
+    <nav class="pageNavigation">
+        <ul class="pagination">
+            <li *ngFor="let page of pages" class="page-item page" [class.active]="currentPage==page">
+
+                <a (click)="openPage(page)" class="page-link">{{page}}</a>
+
+            </li>
+        </ul>
+    </nav>
+</ng-container>

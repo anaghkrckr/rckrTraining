@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using StaffManagementLibrary.DbHandler;
 using StaffManagementLibrary.Staffs;
@@ -7,16 +8,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using static StaffManagementAppAPI.Models.Staff;
 
 namespace StaffManagementAppAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("_myAllowSpecificOrigins")]
     public class StaffController : ControllerBase
     {
 
-
-        
         static IConfiguration ConfigBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
         StaffHelper StaffHelper = new StaffHelper();
         DatabaseSQLHandler DbHelper = new DatabaseSQLHandler(ConfigBuilder.GetValue<string>("ConnectionString"));
@@ -31,6 +32,13 @@ namespace StaffManagementAppAPI.Controllers
             return staffs.ConvertAll(ConvertStaff);
         }
 
+        [HttpGet("StaffTypes")]
+        public ActionResult<List<string>>  GetStaffTypes()
+        {
+            var staffsList = Enum.GetNames(typeof(staffTypes)).Cast<String>().ToList();
+
+            return  Ok(staffsList);
+        }
 
         [HttpGet("{staffType}/{staffId:int}")]
         public ActionResult<Models.Staff> GetStaffById(int staffId,string staffType)
@@ -44,7 +52,10 @@ namespace StaffManagementAppAPI.Controllers
             catch (Exception e)
             {
 
-                return NotFound(e.Message);
+                return NotFound(new
+                {
+                    status = e.Message
+                });
             }
 
         }
@@ -64,17 +75,39 @@ namespace StaffManagementAppAPI.Controllers
             try { 
                 Staff StaffNew=ConvertToStaffManagementStaff(staff);
                 StaffNew = StaffHelper.StaffAdd(StaffNew,DbHelper,StaffNew.StaffType);
-                return Ok(StaffNew);
+                return Ok(new
+                {
+                    status = "Staff Added"
+                });
 
             }
             catch (Exception e)
             {
 
-                return NotFound(e.Message);
+                return NotFound(new
+                {
+                    status = e.Message
+                });
             }
 
         }
+        
+        [HttpPost("addBulk")]
+        public ActionResult<List<Staff>> AddBulk(List<Models.Staff> staffs)
+        {
+            List<Staff> staffList = new List<Staff>();
+            foreach (Models.Staff staff in staffs)
+            {
+                staffList.Add(ConvertToStaffManagementStaff(staff));
+            }
 
+            DbHelper.AddBulk(staffList);
+            return Ok(new
+            {
+                status = $"all added"
+            });
+
+        }
         [HttpPut("{staffType}/{staffId:int}")]
         public ActionResult<Staff> UpdateStaff(Models.Staff staff,string staffType,int staffId)
         {
@@ -88,14 +121,61 @@ namespace StaffManagementAppAPI.Controllers
                 Staff StaffNew = ConvertToStaffManagementStaff(staff);
                 StaffNew.StaffId = staffId;
                 StaffNew=StaffHelper.StaffUpdate(StaffNew, DbHelper);
-                return Ok(StaffNew);
+                return Ok(new
+                {
+                    status = "Staff Updated"
+                });
+            }
+            catch (Exception e)
+            {
+
+                return NotFound(new
+                {
+                    status = e.Message
+                });
+            }
+        }
+        
+        [HttpDelete]
+        public ActionResult<List<Staff>> DeleteBulk(List<Models.Staff> staffs)
+        {
+            List<Staff> staffList = new List<Staff>();
+            foreach(Models.Staff staff in staffs)
+            {
+                staffList.Add(ConvertToStaffManagementStaff(staff));
+            }
+            try
+            {
+            DbHelper.DeleteBulk(staffList);
+
             }
             catch (Exception e)
             {
 
                 return NotFound(e.Message);
             }
+
+            if (staffList.Count == 1)
+            {
+                return Ok(new
+                {
+                    status = $"Staff deleted"
+                });
+            }
+            else
+            {
+                return Ok(new
+                {
+                    status = $"all selected Staff deleted"
+                });
+            }
+
+            
+           
+           
+
         }
+
 
 
         [HttpDelete("{staffType}/{staffId}")]
@@ -105,12 +185,18 @@ namespace StaffManagementAppAPI.Controllers
             {
                 Staff staff = StaffHelper.StaffGet(staffId, DbHelper, staffType);
                 StaffHelper.DeleteStaff(staff, DbHelper, staffType);
-                return Ok("Deleted");
+                var result = new
+                {
+                    status = $"deleted{staffId}"
+                };
+                return Ok(result);
             }
             catch (Exception e)
             {
-
-                return NotFound(e.Message);
+                return NotFound(new
+                {
+                    status = e.Message
+                });
             }
 
         }
@@ -148,21 +234,21 @@ namespace StaffManagementAppAPI.Controllers
 
         private static Staff ConvertToStaffManagementStaff(Models.Staff staff)
         {
-           
             Staff StaffNew = null;
+            staff.StaffType = (staff.StaffType).First().ToString().ToUpper() + (staff.StaffType).Substring(1);
             switch (staff.StaffType)
             {
                 case nameof(Teacher):
                     StaffNew = new Teacher
                     {
-                        Subject = staff.Subject,
+                        Subject =staff.Subject,
                     };
                     break;
 
                 case nameof(Administrator):
                     StaffNew = new Administrator
                     {
-                        AdministratorDepartment = staff.AdministratorDepartment,
+                        AdministratorDepartment =staff.AdministratorDepartment,
                     };
                     break;
 
@@ -177,9 +263,10 @@ namespace StaffManagementAppAPI.Controllers
             {
                 throw new Exception("Staff Type Not Found");
             }
+            StaffNew.StaffId = staff.StaffId;
             StaffNew.StaffName = staff.StaffName;
             StaffNew.StaffAge = staff.StaffAge;
-            StaffNew.StaffType = staff.StaffType;
+            StaffNew.StaffType = (staff.StaffType).First().ToString().ToUpper() + (staff.StaffType).Substring(1);
             return StaffNew;
         }
 

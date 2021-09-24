@@ -1,0 +1,7 @@
+.page {
+    cursor: pointer;
+}
+
+.page-link {
+    z-index: 0!important;
+}

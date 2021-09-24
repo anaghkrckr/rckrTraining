@@ -1,0 +1,49 @@
+.popup {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.popupBackground {
+    top: 0;
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.popupdata {
+    width: 500px;
+    height: 200px;
+    background-color: brown;
+    top: 25%;
+    left: 35%;
+    position: fixed;
+    border-radius: 65px;
+    box-shadow: 0 10px 20px -1px rgb(66, 61, 61);
+    z-index: 1;
+}
+
+.popupButtons {
+    width: 100%;
+    height: 75px;
+    overflow: hidden;
+    bottom: 0;
+    position: absolute;
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+}
+
+.popupHeading {
+    text-align: center;
+    padding-top: 5px;
+}
+
+.popupMessage {
+    text-align: center;
+    padding: 1px;
+    color: aliceblue;
+}

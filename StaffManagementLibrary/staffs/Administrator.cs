@@ -28,7 +28,7 @@ namespace StaffManagementLibrary.Staffs
                 }
                 else if (value.Length > 3)
                 {
-                    administratorDepartment = value;
+                    administratorDepartment = (value).First().ToString().ToUpper() + (value).Substring(1);
                 }
             }
         }

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[procAddStaff]
+﻿CREATE PROCEDURE [dbo].[proc_AddStaff]
 @StaffName nvarchar(30),
 @StaffAge int,
 @StaffType varchar(30),

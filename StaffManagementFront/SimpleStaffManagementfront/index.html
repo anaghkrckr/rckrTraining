@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> -->
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled">Disabled</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="navBar ">
+        <h3 class="d-inline ">STAFF MANAGEMENT APP</h3>
+
+        <!-- <div class="float-end ">
+            <select class="form-select" name="staffs" id="staffs">
+                <option selected="true" value="All">All</option>
+            </select>
+        </div> -->
+
+
+        <div class="dropdown">
+            <button class="dropbtn">
+                <span id="staffSelectionBtn">
+
+                    SELECT STAFF
+                </span>
+                <i class='bi bi-caret-down-fill'></i>
+            </button>
+            <div class="dropdown-content" id="staffs">
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="buttons">
+        <button type="button" class="btn btn-primary" onclick="addForm()">Add</button>
+        <button type="button" class="btn btn-danger" onclick="delStaffHelper(null)">Delete</button>
+    </div>
+
+    <div class="tableStaffs">
+        <table class="table  table-hover" id="staffTable">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+        <nav aria-label="Page navigation" class="staffPageList float-end">
+            <ul class="pagination " id="staffPAgesList">
+            </ul>
+        </nav>
+    </div>
+
+
+    <!-- HIDDEN -->
+    <div class="background addUpdateform" id="staffForm">
+        <div class="form" id="myform">
+            <h1 id="staffFormType"></h1>
+            <form class="formAdd">
+                <input type="hidden" value="" required name="staffId" id="staffId">
+                <div class="form-group row p-2 ">
+                    <label for="staffName" class="col-sm-2 col-form-label">Name</label>
+                    <div class="col-sm-10">
+                        <input value="" required type="text" name="staffName" class="form-control w-75" id="staffName">
+                    </div>
+                </div>
+                <div class="form-group row p-2">
+                    <label for="staffAge" class="col-sm-2 col-form-label">Age</label>
+                    <div class="col-sm-10">
+                        <input value="" required type="number" min="20" max="80" class="form-control w-75" name="staffAge" id="staffAge">
+                    </div>
+                </div>
+                <div class="form-group row p-2">
+                    <label for="staffType" class="col-sm-2 col-form-label">Type</label>
+                    <div class="col-sm-10">
+                        <select required name="staffType" id="formStaffs" class="form-select w-75">
+                            <option value="All">Select staff</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row p-2">
+                    <label for="staffDepartment" class="col-sm-2 col-form-label" id="labelstaffDepartment">Department</label>
+                    <div class="col-sm-10">
+                        <input value="" required type="text" class="form-control w-75" name="staffDepartment" id="staffDepartment">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="button" class="btn btn-danger" onclick="closeForm()">Close</button>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="background delete" id="confirmationDelete">
+        <div class="deleteConfirmationPopup  w-25" id="confirmPopup">
+            <h1>Confirm Delete</h1>
+            <button class="btn btn-danger" id="delConfirmationYESBtn" onclick="deleteStaffBulk(satff)">Yes</button>
+            <button class="btn btn-secondary" id="delConfirmationNOBtn">cancel</button>;
+        </div>
+    </div>
+
+    <div class="statusPopup" id="statusPopup">
+
+    </div>
+
+    <!-- HIDDEN -->
+</body>
+
+
+<script src="index.js">
+</script>
+<script src="paginate.js">
+</script>
+
+
+
+</html>

@@ -153,6 +153,7 @@ namespace StaffManagementLibrary.DbHandler
         public void AddBulk(List<Staff> staffs)
         {
             DataTable tbl = new DataTable();
+            tbl.Columns.Add("Id", typeof(string));
             tbl.Columns.Add("StaffName", typeof(string));
             tbl.Columns.Add("StaffAge", typeof(int));
             tbl.Columns.Add("StaffType", typeof(string));
@@ -162,22 +163,69 @@ namespace StaffManagementLibrary.DbHandler
                 switch (staff.StaffType)
                 {
                     case nameof(Teacher):
-                        tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Teacher)staff).Subject);
+                        tbl.Rows.Add(staff.StaffId, staff.StaffName, staff.StaffAge, staff.StaffType, ((Teacher)staff).Subject);
                         break;
 
                     case nameof(Administrator):
-                        tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Administrator)staff).AdministratorDepartment);
+                        tbl.Rows.Add(staff.StaffId, staff.StaffName, staff.StaffAge, staff.StaffType, ((Administrator)staff).AdministratorDepartment);
 
                         break;
 
                     case nameof(Support):
-                        tbl.Rows.Add(staff.StaffName, staff.StaffAge, staff.StaffType, ((Support)staff).SupportDepartment);
+                        tbl.Rows.Add(staff.StaffId, staff.StaffName, staff.StaffAge, staff.StaffType, ((Support)staff).SupportDepartment);
                         break;
                 }
             }
             SqlCommand command = Connection.CreateCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "proc_InsertStaffs";
+            command.Parameters.AddWithValue("tableStaff", tbl);
+            Connection.Open();
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (SqlException e)
+            {
+                throw;
+            }
+            finally
+            {
+                Connection.Close();
+            }
+
+        }
+        
+        public void DeleteBulk(List<Staff> staffs)
+        {
+            DataTable tbl = new DataTable();
+
+            tbl.Columns.Add("Id", typeof(string));
+            tbl.Columns.Add("StaffName", typeof(string));
+            tbl.Columns.Add("StaffAge", typeof(int));
+            tbl.Columns.Add("StaffType", typeof(string));
+            tbl.Columns.Add("StaffDepartment", typeof(string));
+            foreach (Staff staff in staffs)
+            {
+                switch (staff.StaffType)
+                {
+                    case nameof(Teacher):
+                        tbl.Rows.Add(staff.StaffId,staff.StaffName, staff.StaffAge, staff.StaffType, ((Teacher)staff).Subject);
+                        break;
+
+                    case nameof(Administrator):
+                        tbl.Rows.Add(staff.StaffId, staff.StaffName, staff.StaffAge, staff.StaffType, ((Administrator)staff).AdministratorDepartment);
+
+                        break;
+
+                    case nameof(Support):
+                        tbl.Rows.Add(staff.StaffId, staff.StaffName, staff.StaffAge, staff.StaffType, ((Support)staff).SupportDepartment);
+                        break;
+                }
+            }
+            SqlCommand command = Connection.CreateCommand();
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = "proc_DeleteStaffs";
             command.Parameters.AddWithValue("tableStaff", tbl);
             Connection.Open();
             try
@@ -227,6 +275,7 @@ namespace StaffManagementLibrary.DbHandler
             values = new Object[reader.FieldCount];
             reader.GetValues(values);
             Staff staff = null;
+            string staffType = ((string)values[3]).ToLower();
             switch (values[3])
             {
                 case nameof(Teacher):

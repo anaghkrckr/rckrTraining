@@ -1,0 +1,31 @@
+<div class="staffTable">
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th class="tableHead" (click)="sortTable(item.key)" scope="col" *ngFor="let item of tableHead |keyvalue: preserveTableHeadOrder">
+                    <i class='bi' [class.bi-caret-down-fill]="this.sorting.sortOrder && (item.key==sorting.currentSortKey)" [class.bi-caret-up-fill]="!(this.sorting.sortOrder && (item.key==sorting.currentSortKey))"></i> {{item.value}}
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr (click)="updateStaff(support)" class="tableRows" *ngFor="let support of supporters |staffListFilter:searchKeyword |slice:pageStart:pageEnd |returnStaffPipe">
+                <td>{{support.staffId}}</td>
+                <td class="w-25">{{support.staffName}}</td>
+                <td>{{support.staffAge}}</td>
+                <td class="w-25">{{support.supportDepartment }}</td>
+                <td class="buttonColumn"><button (click)="deleteStaff([support])" class="btn btn-danger">Delete</button>
+                </td>
+                <td><input class="form-control-lg form-check-input w-50 h-25" type="checkbox" (click)="addToDeleteList(support) "></td>
+            </tr>
+        </tbody>
+    </table>
+    <app-paginate [totalItems]="( supporters|staffListFilter:searchKeyword|returnStaffPipe ).length" (activePage)="changePage($event)"></app-paginate>
+
+</div>
+
+<ng-container *ngIf="confirmation==true">
+    <app-confirmationpopup (confirmed)="eventConfirmed($event)">
+    </app-confirmationpopup>
+</ng-container>

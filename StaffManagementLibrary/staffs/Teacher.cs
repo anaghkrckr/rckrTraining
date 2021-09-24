@@ -40,7 +40,7 @@ namespace StaffManagementLibrary.Staffs
                 }
                 else if (value.Length > 3)
                 {
-                    subject = value;
+                    subject = (value).First().ToString().ToUpper() + (value).Substring(1);
                 }
             }
         }
