@@ -1,5 +1,5 @@
 // const base_url = "http://staffapi.dev.grcdev.com/api/staff"
-const base_url = "https://localhost:44332/api/staff"
+const base_url = "http://staffapi.dev.grcdev.com/api/Staff"
 let deleteList = []
 let mainStaffList = []
 let pagedStaffList = []
@@ -74,11 +74,11 @@ async function fetchStaff(staffType) {
 function sortStaffList(item) {
     sortOrder[item] = !sortOrder[item];
     if (item == "department") {
-        mainStaffList.sort(function(a, b) {
+        mainStaffList.sort(function (a, b) {
             return sortOrder[item] ? (((b.subject || b.administratorDepartment || b.supportDepartment) > (a.subject || a.administratorDepartment || a.supportDepartment)) ? 1 : (((a.subject || a.administratorDepartment || a.supportDepartment) > (b.subject || b.administratorDepartment || b.supportDepartment)) ? -1 : 0)) : (((a.subject || a.administratorDepartment || a.supportDepartment) > (b.subject || b.administratorDepartment || b.supportDepartment)) ? 1 : (((b.subject || b.administratorDepartment || b.supportDepartment) > (a.subject || a.administratorDepartment || a.supportDepartment)) ? -1 : 0));
         });
     } else {
-        mainStaffList.sort(function(a, b) {
+        mainStaffList.sort(function (a, b) {
             return sortOrder[item] ? ((b[item] > a[item]) ? 1 : ((a[item] > b[item]) ? -1 : 0)) : ((a[item] > b[item]) ? 1 : ((b[item] > a[item]) ? -1 : 0));
         });
     }
@@ -87,7 +87,7 @@ function sortStaffList(item) {
 
 function renderStaffTable() {
     pagedStaffList = paginate(mainStaffList)
-    var headItems = {...tableHead };
+    var headItems = { ...tableHead };
     let table = document.getElementById("staffTable");
     table.getElementsByTagName('tbody')[0].innerHTML = ""
     table.getElementsByTagName('thead')[0].innerHTML = ""
@@ -113,11 +113,11 @@ function renderStaffTable() {
 
     pagedStaffList[currentPage].forEach(staff => {
         var row = table.getElementsByTagName('tbody')[0].insertRow(-1);
-        row.onclick = function() {
+        row.onclick = function () {
             updateStaffForm(staff)
         }
         row.style.cursor = "pointer"
-        Object.keys(staff).forEach(function(key, i) {
+        Object.keys(staff).forEach(function (key, i) {
             var cell = row.insertCell(i)
             cell.innerHTML = staff[key]
             cell.className = "cell"
@@ -126,7 +126,7 @@ function renderStaffTable() {
         var deleteStaffButton = document.createElement("button");
         deleteStaffButton.className = "btn btn-danger";
         deleteStaffButton.textContent = "DELETE";
-        deleteStaffButton.onclick = function() {
+        deleteStaffButton.onclick = function () {
             delStaffHelper(staff)
         };
         row.insertCell(-1).appendChild(deleteStaffButton);
@@ -179,12 +179,12 @@ function formSubmitHandler() {
     staff[department] = data.get('staffDepartment')
 
     fetch(url, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(staff),
-        })
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(staff),
+    })
         .then(response => response.json())
         .then(data => {
             fetchStaff(staffTypes.selected);
@@ -267,12 +267,12 @@ async function deleteStaff(staff) {
         data = [staff]
     }
     fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
         .then((response) => response.json())
         .then((data) => {
             deleteList = [];
@@ -280,7 +280,7 @@ async function deleteStaff(staff) {
 
             fetchStaff(staffTypes.selected);
         })
-        .catch((error) => {})
+        .catch((error) => { })
 }
 
 function handleFormStaffListChange() {

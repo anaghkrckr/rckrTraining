@@ -65,12 +65,13 @@
   <ItemGroup>
     <Build Include="dbo\Tables\Staff.sql" />
     <Build Include="dbo\Functions\funcStaffDob.sql" />
-    <Build Include="dbo\Stored Procedures\procUpdateStaff.sql" />
-    <Build Include="dbo\Stored Procedures\procInsertStaffs.sql" />
-    <Build Include="dbo\Stored Procedures\procGetStaff.sql" />
-    <Build Include="dbo\Stored Procedures\procGetAll.sql" />
-    <Build Include="dbo\Stored Procedures\procDeleteStaff.sql" />
-    <Build Include="dbo\Stored Procedures\procAddStaff.sql" />
     <Build Include="dbo\User Defined Types\Staffs.sql" />
+    <Build Include="dbo\Stored Procedures\proc_UpdateStaff.sql" />
+    <Build Include="dbo\Stored Procedures\proc_InsertStaffs.sql" />
+    <Build Include="dbo\Stored Procedures\proc_GetStaff.sql" />
+    <Build Include="dbo\Stored Procedures\proc_GetAll.sql" />
+    <Build Include="dbo\Stored Procedures\proc_DeleteStaffs.sql" />
+    <Build Include="dbo\Stored Procedures\proc_DeleteStaff.sql" />
+    <Build Include="dbo\Stored Procedures\proc_AddStaff.sql" />
   </ItemGroup>
 </Project>

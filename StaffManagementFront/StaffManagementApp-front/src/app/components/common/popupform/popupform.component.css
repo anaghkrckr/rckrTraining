@@ -1,44 +1,48 @@
 .popup {
-    display: block;
-    top: 0;
-    left: 0;
-    position: absolute;
-    z-index: 1;
+  display: block;
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: 1;
 }
 
 .popupform {
-    width: 700px;
-    height: 550px;
-    background-color: #f1c40f;
-    border-radius: 15px;
-    opacity: 100%;
-    position: fixed;
-    z-index: 1;
-    text-align: center;
-    padding: 20px;
-    border-radius: 100px;
-    overflow: hidden;
-    top: 0;
-    left: 0;
-    margin-top: 5%;
-    margin-left: 30%;
-    box-shadow: 0 10px 20px -1px rgb(66, 61, 61);
+  width: 700px;
+  height: 550px;
+  background-color: #f1c40f;
+  border-radius: 15px;
+  opacity: 100%;
+  position: fixed;
+  z-index: 1;
+  text-align: center;
+  padding: 20px;
+  border-radius: 100px;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  margin-top: 5%;
+  margin-left: 30%;
+  box-shadow: 0 10px 20px -1px rgb(66, 61, 61);
 }
 
 .popupformBackground {
-    position: fixed;
-    background-color: black;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    opacity: 0.5;
+  position: fixed;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.5;
 }
 
 .formHeading {
-    padding: 20px;
+  padding: 20px;
 }
 
 .error {
-    border-radius: 0px 0px 15px 15px;
-    height: 30px;
+  border-radius: 0px 0px 15px 15px;
+  height: 30px;
+}
+
+.form-control.ng-touched.ng-invalid {
+  border: 2px solid red;
 }

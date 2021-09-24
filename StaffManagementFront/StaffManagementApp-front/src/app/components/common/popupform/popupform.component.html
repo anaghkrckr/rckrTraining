@@ -1,75 +1,128 @@
-<div [style.display]="hide" class="popup">
-    <div class="popupformBackground">
-
-    </div>
+<div [style.display]="hide"
+     class="popup">
+    <div class="popupformBackground"></div>
     <div class="popupform">
-        <div class="background addUpdateform" id="staffForm">
+        <div class="background addUpdateform"
+             id="staffForm">
             <div class="formHeading">
-                <h1>{{formType}}</h1>
+                <h1>{{ formType }}</h1>
             </div>
-            <div class="form" id="myform">
+            <div class="form"
+                 id="myform">
                 <h1 id="staffFormType"></h1>
                 <form class="formAdd">
-
-                    <input type="hidden" [(ngModel)]="staff.staffid" required name="staffId" id="staffId">
-                    <div class="form-group row p-3  ">
-                        <label for="staffName" class="col-sm-2 col-form-label">Name</label>
+                    <input type="hidden"
+                           [(ngModel)]="staff.staffid"
+                           required
+                           name="staffId"
+                           id="staffId" />
+                    <div class="form-group row p-3">
+                        <label for="staffName"
+                               class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
-                            <input [ngClass]="{'border border-2 border-danger rounded':(_validationDict['staffName']?_validationDict['staffName'].length>0:0 ) }" (keyup)="validation($event,'staffName')" [(ngModel)]="staff.staffName" required type="text" name="staffName" class="form-control w-75"
-                                id="staffName">
-                            <ng-container *ngIf=" (_validationDict['staffName']?_validationDict['staffName'].length>0:0 ) ">
+                            <input name="staffName"
+                                   ngModel
+                                   #staffName="ngModel"
+                                   [(ngModel)]="staff.staffName"
+                                   required
+                                   type="text"
+                                   name="staffName"
+                                   class="form-control w-75"
+                                   id="staffName"
+                                   minlength="3"
+                                   maxlength="30" />
+                            <div class="alert alert-danger"
+                                 *ngIf="staffName.touched && !staffName.valid">
+                                <div *ngIf="staffName.errors?.required">Name is required</div>
+                                <div *ngIf="staffName.errors?.minlength">Name should be min 3 characters</div>
+                            </div>
+
+                            <ng-container
+                                          *ngIf="_validationDict['staffName']? _validationDict['staffName'].length > 0 : 0 ">
                                 <div class="bg-danger w-75 error">
-                                    {{_validationDict['staffName']}}
+                                    {{ _validationDict["staffName"] }}
                                 </div>
                             </ng-container>
-
                         </div>
-
                     </div>
-                    <div class="form-group row p-3 ">
-                        <label for="staffAge" class="col-sm-2 col-form-label">Age</label>
+                    <div class="form-group row p-3">
+                        <label for="staffAge"
+                               class="col-sm-2 col-form-label">Age</label>
                         <div class="col-sm-10">
-                            <input [ngClass]="{'border border-2 border-danger rounded':(_validationDict['staffAge']?_validationDict['staffAge'].length>0:0 )  }" (keyup)="validation($event,'staffAge')" [(ngModel)]="staff.staffAge" required type="number" min="20" max="80" class="form-control w-75"
-                                name="staffAge" id="staffAge">
-                            <ng-container *ngIf="((_validationDict['staffAge']?_validationDict['staffAge'].length>0:0 ) )">
+                            <input [ngClass]="{'border border-2 border-danger rounded': _validationDict['staffAge'] ? _validationDict['staffAge'].length > 0: 0}"
+                                   (keyup)="validation($event, 'staffAge')"
+                                   [(ngModel)]="staff.staffAge"
+                                   required
+                                   type="number"
+                                   min="20"
+                                   max="80"
+                                   class="form-control w-75"
+                                   name="staffAge"
+                                   id="staffAge" />
+                            <ng-container
+                                          *ngIf=" _validationDict['staffAge']? _validationDict['staffAge'].length > 0 : 0">
                                 <div class="bg-danger w-75 error">
-                                    {{_validationDict['staffAge']}}
+                                    {{ _validationDict["staffAge"] }}
                                 </div>
                             </ng-container>
                         </div>
                     </div>
-                    <div class="form-group row p-3 ">
-                        <label for="staffType" class="col-sm-2 col-form-label">Type</label>
+                    <div class="form-group row p-3">
+                        <label for="staffType"
+                               class="col-sm-2 col-form-label">Type</label>
                         <div class="col-sm-10">
-                            <select (ngModelChange)="onStaffTypeChange($event)" [ngModel]="staff.staffType" required name="staffType" id="formStaffs" class="form-select w-75">
+                            <select (ngModelChange)="onStaffTypeChange($event)"
+                                    [ngModel]="staff.staffType"
+                                    required
+                                    name="staffType"
+                                    id="formStaffs"
+                                    class="form-select w-75">
                                 <option value="All">Select staff</option>
-                                <option [selected]="staff==undefined? false:staff.staffType==item.key"
-                                    *ngFor="let item of (staffTypes.staffs) | keyvalue " [value]="item.key">
-                                    {{item.key}}</option>
+                                <option [selected]=" staff == undefined ? false : staff.staffType == item.key "
+                                        *ngFor="let item of staffTypes.staffs | keyvalue"
+                                        [value]="item.key">
+                                    {{ item.key }}
+                                </option>
                             </select>
                         </div>
                     </div>
 
-
-                    <div class="form-group row p-3 ">
-                        <label for="staffDepartment" class="col-sm-2 col-form-label" id="labelstaffDepartment">{{staff.departmentName|| "Department"}}</label>
+                    <div class="form-group row p-3">
+                        <label for="staffDepartment"
+                               class="col-sm-2 col-form-label"
+                               id="labelstaffDepartment">{{
+                            staff.departmentName || "Department" }}</label>
                         <div class="col-sm-10">
-                            <input [ngClass]="{'border border-2 border-danger rounded':(_validationDict['department']?_validationDict['department'].length>0:0 )  }" (keyup)="validation($event,'department')" [(ngModel)]="staff.department" required type="text" class="form-control w-75"
-                                name="staffDepartment" id="staffDepartment">
-                            <ng-container *ngIf="(_validationDict['department']?_validationDict['department'].length>0:0 ) ">
+                            <input [ngClass]="{'border border-2 border-danger rounded': _validationDict['department'] ? _validationDict['department'].length > 0: 0}"
+                                   (keyup)="validation($event, 'department')"
+                                   [(ngModel)]="staff.department"
+                                   required
+                                   type="text"
+                                   class="form-control w-75"
+                                   name="staffDepartment"
+                                   id="staffDepartment" />
+                            <ng-container
+                                          *ngIf="_validationDict['department']? _validationDict['department'].length > 0 : 0">
                                 <div class="bg-danger w-75 error">
-                                    {{_validationDict['department']}}
+                                    {{ _validationDict["department"] }}
                                 </div>
                             </ng-container>
                         </div>
                     </div>
 
-                    <button type="submit" [ngClass]="{'disabled': this.validationErrors}" class="btn btn-success" (click)="onSubmit(staff)">Submit</button>
-                    <button type="button" class="btn btn-danger" (click)="closeForm()">Close</button>
+                    <button type="submit"
+                            [ngClass]="{ disabled: 0 }"
+                            class="btn btn-success"
+                            (click)="onSubmit(staff)">
+                        Submit
+                    </button>
+                    <button type="button"
+                            class="btn btn-danger"
+                            (click)="closeForm()">
+                        Close
+                    </button>
                 </form>
-
             </div>
         </div>
     </div>
-
 </div>

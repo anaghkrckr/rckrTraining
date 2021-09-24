@@ -130,7 +130,6 @@ export class PopupformComponent implements OnInit {
     let size = 0
     Object.keys(this._validationDict).forEach(val => {
       size++
-      console.log(val, this._validationDict[val].length, (this._validationDict[val].length > 0))
       validationerror = validationerror || (this._validationDict[val].length > 0)
     })
     if (this.formType == "Add Form") {

@@ -11,6 +11,7 @@ import { NavbarComponent } from './components/common/navbar/navbar.component';
 import { PopupformComponent } from './components/common/popupform/popupform.component';
 import { StaffComponent } from './components/staff/staff.component';
 import { StaffServices } from './services/staff.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { StaffServices } from './services/staff.service';
   imports: [
     CommonComponents,
     CommonModule,
-    BrowserModule,
+    BrowserAnimationsModule,
+    // BrowserModule,
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot([
