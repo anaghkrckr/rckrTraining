@@ -1,5 +1,5 @@
 // const base_url = "http://staffapi.dev.grcdev.com/api/staff"
-const base_url = "http://staffapi.dev.grcdev.com/api/Staff"
+const base_url = "http://staffapi.dev.grcdev.com/api/staff"
 let deleteList = []
 let mainStaffList = []
 let pagedStaffList = []
@@ -177,7 +177,6 @@ function formSubmitHandler() {
     }
     let department = staffTypes.staffs[staff.staffType].objName
     staff[department] = data.get('staffDepartment')
-
     fetch(url, {
         method: method,
         headers: {
